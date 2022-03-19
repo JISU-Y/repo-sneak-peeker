@@ -2,7 +2,15 @@ import React from "react"
 import styled from "styled-components"
 import { ContentBox } from "../styles/commonComponent"
 
-const RepoCard = ({ repoName, description, ownerName }) => {
+const RepoCard = ({ repoName, description, ownerName, useDelete = false }) => {
+  const addRepo = () => {
+    console.log("add")
+  }
+
+  const deleteRepo = () => {
+    console.log("delete")
+  }
+
   return (
     <ContentBox>
       <RepoInfoWrapper>
@@ -10,7 +18,7 @@ const RepoCard = ({ repoName, description, ownerName }) => {
         <Description>{description ?? "레포 description"}</Description>
         <Owner>owner : {ownerName ?? "JISU-Y"}</Owner>
       </RepoInfoWrapper>
-      <Button>레포 추가</Button>
+      <Button onClick={useDelete ? deleteRepo : addRepo}>레포 {useDelete ? "삭제" : "추가"}</Button>
     </ContentBox>
   )
 }
