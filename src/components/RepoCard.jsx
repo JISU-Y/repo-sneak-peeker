@@ -1,22 +1,27 @@
 import React from "react"
+import { useDispatch } from "react-redux"
 import styled from "styled-components"
+import { addRepoToStorage, deleteRepoFromStorage } from "../redux/reducers/repoReducer"
 import { ContentBox } from "../styles/commonComponent"
 
-const RepoCard = ({ repoName, description, ownerName, useDelete = false }) => {
+const RepoCard = ({ repoInfo, useDelete = false }) => {
+  const dispatch = useDispatch()
+
   const addRepo = () => {
-    console.log("add")
+    dispatch(addRepoToStorage(repoInfo))
   }
 
   const deleteRepo = () => {
-    console.log("delete")
+    const id = repoInfo.id
+    dispatch(deleteRepoFromStorage({ id }))
   }
 
   return (
     <ContentBox>
       <RepoInfoWrapper>
-        <RepoName>{repoName ?? "레포 이름"}</RepoName>
-        <Description>{description ?? "레포 description"}</Description>
-        <Owner>owner : {ownerName ?? "JISU-Y"}</Owner>
+        <RepoName>{repoInfo.name ?? "레포 이름"}</RepoName>
+        <Description>{repoInfo.description ?? "레포 description"}</Description>
+        <Owner>owner : {repoInfo.owner.login ?? "JISU-Y"}</Owner>
       </RepoInfoWrapper>
       <Button onClick={useDelete ? deleteRepo : addRepo}>레포 {useDelete ? "삭제" : "추가"}</Button>
     </ContentBox>
@@ -28,6 +33,7 @@ const RepoInfoWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 8px;
+  flex: 1;
 `
 
 const RepoName = styled.span`
