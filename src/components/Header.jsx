@@ -1,12 +1,25 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
 const Header = ({ title }) => {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [presentPage, setPresentPage] = useState("")
+
+  useEffect(() => {
+    setPresentPage(location.pathname.slice(1))
+  }, [location.pathname])
+
+  const backToPrevPage = () => navigate(-1)
+
+  const goToRepoPage = () => navigate("/repo")
+
   return (
     <Container>
-      <span>{"<"}</span>
+      <span onClick={backToPrevPage}>{"<"}</span>
       <Title>{title ?? "Header"}</Title>
-      <button>보관함 가기</button>
+      {presentPage === "" && <button onClick={goToRepoPage}>보관함 가기</button>}
     </Container>
   )
 }

@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import Header from "../components/Header"
 import RepoCard from "../components/RepoCard"
+import { Container } from "../styles/commonComponent"
 
 const Main = () => {
   return (
@@ -14,11 +15,6 @@ const Main = () => {
     </Container>
   )
 }
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-`
 
 const Input = styled.input`
   width: 100%;
