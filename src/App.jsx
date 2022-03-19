@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom"
 import styled from "styled-components"
+import Issue from "./pages/Issue"
 import Main from "./pages/Main"
+import Repo from "./pages/Repo"
 import GlobalStyle from "./styles/GlobalStyle"
 
 function App() {
@@ -11,8 +13,8 @@ function App() {
         <AppComponent>
           <Routes>
             <Route path="/" element={<Main />} />
-            <Route path="/repo" element={<div />} />
-            <Route path="/issue" element={<div />} />
+            <Route path="/repo" element={<Repo />} />
+            <Route path="/issue" element={<Issue />} />
           </Routes>
         </AppComponent>
       </Background>
