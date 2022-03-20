@@ -31,7 +31,7 @@ const Background = styled.div`
 
 const AppComponent = styled.div`
   width: 480px;
-  min-height: 812px;
+  min-height: 100vh;
   height: 100%;
   background-color: white;
   margin: auto;

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
 
 export const BASE_URL = "https://api.github.com/"
 
@@ -6,13 +6,14 @@ const initialState = {
   data: null,
   loading: false,
   error: null,
+  pageItems: [],
   savedRepos: [],
+  maxPage: null,
 }
 
 export const fetchRepos = createAsyncThunk("repoData/fetchRepoData", async (word) => {
   const res = await fetch(`${BASE_URL}search/repositories?q=${word}`)
   const data = await res.json()
-  console.log(data)
   return data
 })
 
@@ -37,6 +38,13 @@ export const repoReducer = createSlice({
       localStorage.setItem("repos", JSON.stringify(filteredRepos))
       state.savedRepos = filteredRepos
     },
+    loadMore: (state, action) => {
+      // loadMore 하기
+      const page = action.payload
+      const { data } = current(state)
+      state.maxPage = Math.ceil(data?.items.length / 10)
+      state.pageItems = [...state.pageItems, ...data?.items.slice((page - 1) * 10, page * 10)]
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -57,6 +65,6 @@ export const repoReducer = createSlice({
   },
 })
 
-export const { addRepoToStorage, showSavedRepos, deleteRepoFromStorage } = repoReducer.actions
+export const { addRepoToStorage, showSavedRepos, deleteRepoFromStorage, loadMore } = repoReducer.actions
 
 export default repoReducer.reducer
