@@ -19,12 +19,12 @@ const Issue = () => {
     <Container>
       <Header title="이슈 리스트" />
       <RepoInfoBox>
-        <RepoName>{repo.name ?? "레포 이름"}</RepoName>
-        <Owner>owner : {repo.owner.login ?? "JISU-Y"}</Owner>
+        <RepoName>{repo?.name ?? "레포 이름"}</RepoName>
+        <Owner>owner : {repo?.owner.login ?? "JISU-Y"}</Owner>
       </RepoInfoBox>
       <IssueContainer>
         {issues?.map((issue) => (
-          <IssueCard key={issue.id} repoName={repo.name} issue={issue} />
+          <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />
         ))}
       </IssueContainer>
     </Container>

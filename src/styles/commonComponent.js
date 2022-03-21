@@ -11,6 +11,7 @@ export const ContentBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 12px 0;
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
@@ -18,4 +19,12 @@ export const ContentBox = styled.div`
   &:hover {
     transform: translateY(-5px);
   }
+`
+
+export const Tag = styled.div`
+  padding: 4px 8px;
+  background-color: deeppink;
+  width: fit-content;
+  border-radius: 4px;
+  color: white;
 `

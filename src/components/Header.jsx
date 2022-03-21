@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import ChevronLeft from "../icons/ChevronLeft"
 
 const Header = ({ title }) => {
   const location = useLocation()
@@ -17,9 +18,9 @@ const Header = ({ title }) => {
 
   return (
     <Container>
-      <span onClick={backToPrevPage}>{"<"}</span>
+      <ChevronLeft fill={"black"} onClick={backToPrevPage} isInMain={presentPage === ""} />
       <Title>{title ?? "Header"}</Title>
-      {presentPage === "" && <button onClick={goToRepoPage}>보관함 가기</button>}
+      {presentPage === "" && <Button onClick={goToRepoPage}>보관함 가기</Button>}
     </Container>
   )
 }
@@ -44,6 +45,11 @@ const Title = styled.h3`
   font-size: 18px;
   font-weight: bold;
   transform: translate(-50%, -50%);
+`
+
+const Button = styled.button`
+  padding: 4px 8px;
+  cursor: pointer;
 `
 
 export default Header

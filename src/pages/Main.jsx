@@ -67,7 +67,7 @@ const Main = () => {
 
 const ContentWrapper = styled.div`
   width: 100%;
-  padding: 0 18px;
+  padding: 0 18px 12px;
 `
 
 const SearchForm = styled.form`

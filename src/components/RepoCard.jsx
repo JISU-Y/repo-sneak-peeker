@@ -1,12 +1,13 @@
 import React from "react"
 import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { fetchIssues, selectRepo } from "../redux/reducers/issueReducer"
 import { addRepoToStorage, deleteRepoFromStorage } from "../redux/reducers/repoReducer"
 import { ContentBox } from "../styles/commonComponent"
 
 const RepoCard = ({ repoInfo, useDelete = false }) => {
+  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -22,6 +23,7 @@ const RepoCard = ({ repoInfo, useDelete = false }) => {
   }
 
   const gotoIssues = () => {
+    if (location.pathname === "/") return
     dispatch(selectRepo(repoInfo))
     dispatch(fetchIssues(repoInfo.full_name))
     navigate("/issue")
