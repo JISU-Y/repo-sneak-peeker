@@ -2,6 +2,11 @@ import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
 
 export const BASE_URL = "https://api.github.com/"
 
+const initialFeedback = {
+  type: "",
+  msg: "",
+}
+
 const initialState = {
   data: null,
   loading: false,
@@ -10,6 +15,7 @@ const initialState = {
   pageItems: [],
   page: 0,
   maxPage: null,
+  feedback: initialFeedback,
 }
 
 export const fetchRepos = createAsyncThunk("repoData/fetchRepoData", async (word) => {
@@ -29,11 +35,28 @@ export const repoReducer = createSlice({
     addRepoToStorage: (state, action) => {
       const repo = action.payload
       const reposFromLocal = JSON.parse(localStorage.getItem("repos"))
+      const { savedRepos } = current(state)
 
-      if (reposFromLocal.find((el) => el.id === repo.id) || state.savedRepos.length >= 4) return
+      if (reposFromLocal.find((el) => el.id === repo.id)) {
+        state.feedback = {
+          type: "failure",
+          msg: "이미 추가하신 repo입니다.",
+        }
+        return
+      } else if (reposFromLocal.length >= 4) {
+        state.feedback = {
+          type: "failure",
+          msg: "최대 저장 repo를 초과하였습니다. (최대 4개)",
+        }
+        return
+      }
 
-      localStorage.setItem("repos", JSON.stringify([...state.savedRepos, repo]))
-      state.savedRepos = [...state.savedRepos, repo]
+      localStorage.setItem("repos", JSON.stringify([...reposFromLocal, repo]))
+      state.savedRepos = [...savedRepos, repo]
+      state.feedback = {
+        type: "success",
+        msg: "repo를 추가하였습니다.",
+      }
     },
     deleteRepoFromStorage: (state, action) => {
       const { id } = action.payload
@@ -41,6 +64,10 @@ export const repoReducer = createSlice({
 
       localStorage.setItem("repos", JSON.stringify(filteredRepos))
       state.savedRepos = filteredRepos
+      state.feedback = {
+        type: "success",
+        msg: "repo를 삭제하였습니다.",
+      }
     },
     loadMore: (state, action) => {
       // loadMore 하기
@@ -50,6 +77,9 @@ export const repoReducer = createSlice({
       state.page = page
       state.maxPage = Math.ceil(data?.items.length / 10)
       state.pageItems = [...state.pageItems, ...pageItems]
+    },
+    cleanupFeedback: (state) => {
+      state.feedback = initialFeedback
     },
   },
   extraReducers: (builder) => {
@@ -79,6 +109,6 @@ export const repoReducer = createSlice({
   },
 })
 
-export const { addRepoToStorage, showSavedRepos, deleteRepoFromStorage, loadMore } = repoReducer.actions
+export const { addRepoToStorage, showSavedRepos, deleteRepoFromStorage, loadMore, cleanupFeedback } = repoReducer.actions
 
 export default repoReducer.reducer

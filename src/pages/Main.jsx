@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
 import RepoCard from "../components/RepoCard"
-import { fetchRepos, loadMore } from "../redux/reducers/repoReducer"
+import { cleanupFeedback, fetchRepos, loadMore } from "../redux/reducers/repoReducer"
 import { Container } from "../styles/commonComponent"
 
 const Main = () => {
@@ -12,7 +12,7 @@ const Main = () => {
   const [text, setText] = useState("")
   const dispatch = useDispatch()
 
-  const { data, pageItems, page, maxPage, loading } = useSelector((state) => state.repoData)
+  const { data, pageItems, page, maxPage, feedback, loading } = useSelector((state) => state.repoData)
   // input에 입력할때마다 불필요한 렌더링 일어나지 않도록 memo 사용하기
 
   const handleSubmit = (e) => {
@@ -40,6 +40,12 @@ const Main = () => {
     }
     return () => observer && observer.disconnect()
   }, [dispatch, target, page])
+
+  useEffect(() => {
+    dispatch(cleanupFeedback())
+    if (!feedback.msg) return
+    alert(feedback.msg)
+  }, [feedback, dispatch])
 
   return (
     <Container>

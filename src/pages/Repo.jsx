@@ -3,16 +3,22 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
 import RepoCard from "../components/RepoCard"
-import { showSavedRepos } from "../redux/reducers/repoReducer"
+import { cleanupFeedback, showSavedRepos } from "../redux/reducers/repoReducer"
 import { Container } from "../styles/commonComponent"
 
 const Repo = () => {
   const dispatch = useDispatch()
-  const { savedRepos } = useSelector((state) => state.repoData)
+  const { savedRepos, feedback } = useSelector((state) => state.repoData)
 
   useEffect(() => {
     dispatch(showSavedRepos())
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(cleanupFeedback())
+    if (!feedback.msg) return
+    alert(feedback.msg)
+  }, [feedback.msg, dispatch])
 
   return (
     <Container>
