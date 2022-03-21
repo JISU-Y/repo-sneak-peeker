@@ -17,6 +17,7 @@ const Main = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!text) return
     dispatch(fetchRepos(text))
     setText("")
   }

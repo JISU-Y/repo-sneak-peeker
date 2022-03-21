@@ -1,23 +1,34 @@
 import React from "react"
 import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import { fetchIssues, selectRepo } from "../redux/reducers/issueReducer"
 import { addRepoToStorage, deleteRepoFromStorage } from "../redux/reducers/repoReducer"
 import { ContentBox } from "../styles/commonComponent"
 
 const RepoCard = ({ repoInfo, useDelete = false }) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const addRepo = () => {
+  const addRepo = (e) => {
+    e.stopPropagation()
     dispatch(addRepoToStorage(repoInfo))
   }
 
-  const deleteRepo = () => {
+  const deleteRepo = (e) => {
+    e.stopPropagation()
     const id = repoInfo.id
     dispatch(deleteRepoFromStorage({ id }))
   }
 
+  const gotoIssues = () => {
+    dispatch(selectRepo(repoInfo))
+    dispatch(fetchIssues(repoInfo.full_name))
+    navigate("/issue")
+  }
+
   return (
-    <ContentBox>
+    <ContentBox onClick={gotoIssues}>
       <RepoInfoWrapper>
         <RepoName>{repoInfo.name ?? "레포 이름"}</RepoName>
         <Description>{repoInfo.description ?? "레포 description"}</Description>
