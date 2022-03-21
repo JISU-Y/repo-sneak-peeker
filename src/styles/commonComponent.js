@@ -1,0 +1,31 @@
+import styled from "styled-components"
+
+export const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`
+
+export const ContentBox = styled.div`
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-5px);
+  }
+`
+
+export const Tag = styled.div`
+  padding: 4px 8px;
+  background-color: deeppink;
+  width: fit-content;
+  border-radius: 4px;
+  color: white;
+  cursor: default;
+`
