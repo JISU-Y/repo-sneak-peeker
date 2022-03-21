@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { fetchIssues, selectRepo } from "../redux/reducers/issueReducer"
 import { addRepoToStorage, deleteRepoFromStorage } from "../redux/reducers/repoReducer"
-import { ContentBox } from "../styles/commonComponent"
+import { ContentBox, Tag } from "../styles/commonComponent"
 
 const RepoCard = ({ repoInfo, useDelete = false }) => {
   const location = useLocation()
@@ -32,7 +32,10 @@ const RepoCard = ({ repoInfo, useDelete = false }) => {
   return (
     <ContentBox onClick={gotoIssues}>
       <RepoInfoWrapper>
-        <RepoName>{repoInfo.name ?? "레포 이름"}</RepoName>
+        <TitleAndLang>
+          <RepoName>{repoInfo.name ?? "레포 이름"}</RepoName>
+          <LanguageTag>{repoInfo?.language}</LanguageTag>
+        </TitleAndLang>
         <Description>{repoInfo.description ?? "레포 description"}</Description>
         <Owner>owner : {repoInfo.owner.login ?? "JISU-Y"}</Owner>
       </RepoInfoWrapper>
@@ -49,8 +52,18 @@ const RepoInfoWrapper = styled.div`
   flex: 1;
 `
 
+const TitleAndLang = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const RepoName = styled.span`
   font-weight: bold;
+  margin-right: 8px;
+`
+
+const LanguageTag = styled(Tag)`
+  font-size: 12px;
 `
 
 const Description = styled.p``

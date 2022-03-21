@@ -31,6 +31,7 @@ const IssueInfoWrapper = styled.a`
   justify-content: space-between;
   text-decoration: none;
   color: white;
+  width: 100%;
   height: 200px;
 `
 
@@ -41,6 +42,7 @@ const RepoTitle = styled.span`
 const IssueTitle = styled.span`
   font-size: 20px;
   font-weight: bold;
+  word-break: break-all;
 `
 
 const StateTag = styled(Tag)`

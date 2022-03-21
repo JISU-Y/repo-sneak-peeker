@@ -38,8 +38,7 @@ const RepoInfoBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
-  padding-top: 0;
+  padding: 0 16px 8px;
 `
 
 const RepoName = styled.span`
@@ -52,8 +51,10 @@ const Owner = styled.span``
 const IssueContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 226px;
   padding: 16px;
   gap: 8px;
+  height: 726px;
 `
 
 export default Issue

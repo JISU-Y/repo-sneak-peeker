@@ -27,4 +27,5 @@ export const Tag = styled.div`
   width: fit-content;
   border-radius: 4px;
   color: white;
+  cursor: default;
 `

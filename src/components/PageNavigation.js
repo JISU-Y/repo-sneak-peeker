@@ -47,7 +47,9 @@ const PageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 16px;
+  padding: 16px 0;
+  width: 100%;
+  background-color: lavender;
 `
 
 const PagesWrapper = styled.div`
