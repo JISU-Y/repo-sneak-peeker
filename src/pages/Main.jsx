@@ -11,9 +11,8 @@ const Main = () => {
   const [target, setTarget] = useState(null)
   const [text, setText] = useState("")
   const dispatch = useDispatch()
-  const [page, setPage] = useState(0)
 
-  const { data, pageItems, maxPage, loading } = useSelector((state) => state.repoData)
+  const { data, pageItems, page, maxPage, loading } = useSelector((state) => state.repoData)
   // input에 입력할때마다 불필요한 렌더링 일어나지 않도록 memo 사용하기
 
   const handleSubmit = (e) => {
@@ -27,7 +26,7 @@ const Main = () => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target)
         // next page
-        setPage((prev) => prev + 1)
+        dispatch(loadMore(page + 1))
         observer.observe(entry.target)
       }
     }
@@ -40,14 +39,7 @@ const Main = () => {
       observer.observe(target)
     }
     return () => observer && observer.disconnect()
-  }, [target])
-
-  useEffect(() => {
-    if (!data?.items && page !== maxPage) return
-
-    // fetch more
-    dispatch(loadMore(page))
-  }, [dispatch, page, data?.items, maxPage])
+  }, [dispatch, target, page])
 
   return (
     <Container>

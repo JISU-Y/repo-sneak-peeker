@@ -6,8 +6,9 @@ const initialState = {
   data: null,
   loading: false,
   error: null,
-  pageItems: [],
   savedRepos: [],
+  pageItems: [],
+  page: 0,
   maxPage: null,
 }
 
@@ -27,6 +28,9 @@ export const repoReducer = createSlice({
     },
     addRepoToStorage: (state, action) => {
       const repo = action.payload
+      const reposFromLocal = JSON.parse(localStorage.getItem("repos"))
+
+      if (reposFromLocal.find((el) => el.id === repo.id) || state.savedRepos.length >= 4) return
 
       localStorage.setItem("repos", JSON.stringify([...state.savedRepos, repo]))
       state.savedRepos = [...state.savedRepos, repo]
@@ -42,21 +46,31 @@ export const repoReducer = createSlice({
       // loadMore 하기
       const page = action.payload
       const { data } = current(state)
+      const pageItems = data?.items.slice((page - 1) * 10, page * 10)
+      state.page = page
       state.maxPage = Math.ceil(data?.items.length / 10)
-      state.pageItems = [...state.pageItems, ...data?.items.slice((page - 1) * 10, page * 10)]
+      state.pageItems = [...state.pageItems, ...pageItems]
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchRepos.pending, (state) => {
         state.loading = true
+        state.page = 0
+        state.pageItems = []
       })
       .addCase(fetchRepos.fulfilled, (state, action) => {
         state.loading = false
+        state.page = 0
+        state.pageItems = []
+        state.data = []
         state.data = action.payload
       })
       .addCase(fetchRepos.rejected, (state, action) => {
         state.loading = false
+        state.pageItems = []
+        state.data = []
+        state.page = 0
         state.error = {
           message: action.error.message,
           stack: action.error.stack,
