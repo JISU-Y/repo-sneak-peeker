@@ -1,10 +1,28 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
 import { BASE_URL } from "./repoReducer"
 
 const initialState = {
   repo: null,
   loading: false,
   issues: [],
+  pageItems: [],
+  page: 1,
+  totalPage: 0,
+}
+
+const splitIssuesByPage = (items, page, state) => {
+  const pageItems = items.slice((page - 1) * 6, page * 6)
+  const { totalPage } = current(state)
+  if (page >= state.totalPage) {
+    state.page = state.totalPage
+    return items.slice((totalPage - 1) * 6, totalPage * 6)
+  } else if (page <= 1) {
+    state.page = 1
+    return items.slice(0, 6)
+  } else {
+    state.page = page
+    return pageItems
+  }
 }
 
 export const fetchIssues = createAsyncThunk("issueData/fetchIssueData", async (fullName) => {
@@ -22,7 +40,7 @@ export const issueReducer = createSlice({
     selectRepo: (state, action) => {
       const selectedRepoFromLocal = JSON.parse(localStorage.getItem("selectedRepo"))
       const selectedRepo = action.payload
-      // 새로고침하면 issue 페이지에서 에러나니까 local에 저장
+      state.page = 1
       localStorage.setItem("selectedRepo", JSON.stringify({ ...selectedRepoFromLocal, repo: selectedRepo }))
       state.repo = selectedRepo
     },
@@ -30,6 +48,12 @@ export const issueReducer = createSlice({
       const selectedRepo = JSON.parse(localStorage.getItem("selectedRepo"))
       state.repo = selectedRepo.repo
       state.issues = selectedRepo.issues
+      state.totalPage = Math.ceil(selectedRepo.issues.length / 6)
+      state.pageItems = splitIssuesByPage(selectedRepo.issues, state.page, state)
+    },
+    movePage: (state, action) => {
+      const page = action.payload
+      state.pageItems = splitIssuesByPage(state.issues, page, state)
     },
   },
   extraReducers: (builder) => {
@@ -39,6 +63,8 @@ export const issueReducer = createSlice({
       })
       .addCase(fetchIssues.fulfilled, (state, action) => {
         state.loading = false
+        state.totalPage = Math.ceil(action.payload.length / 6)
+        state.pageItems = splitIssuesByPage(action.payload, state.page, state)
         state.issues = action.payload
       })
       .addCase(fetchIssues.rejected, (state, action) => {
@@ -53,6 +79,6 @@ export const issueReducer = createSlice({
   },
 })
 
-export const { selectRepo, showCurrentRepo } = issueReducer.actions
+export const { selectRepo, showCurrentRepo, movePage } = issueReducer.actions
 
 export default issueReducer.reducer

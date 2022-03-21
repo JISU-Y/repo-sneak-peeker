@@ -1,14 +1,14 @@
 import React from "react"
 
-export default function ChevronLeft({ fill, isInMain, ...rest }) {
+export default function ChevronLeft({ width = "1em", height = "1em", fill, isinmain, ...rest }) {
   return (
     <svg
-      width="1em"
-      height="1em"
+      width={width}
+      height={height}
       viewBox="0 0 64 64"
       fill={fill}
       preserveAspectRatio="xMinYMin meet"
-      visibility={isInMain ? "hidden" : "visible"}
+      visibility={isinmain ? "hidden" : "visible"}
       {...rest}
     >
       <path

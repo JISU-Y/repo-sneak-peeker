@@ -16,8 +16,8 @@ const Main = () => {
   // input에 입력할때마다 불필요한 렌더링 일어나지 않도록 memo 사용하기
 
   const handleSubmit = (e) => {
-    e.preventDefault()
     if (!text) return
+    e.preventDefault()
     dispatch(fetchRepos(text))
     setText("")
   }
@@ -60,6 +60,7 @@ const Main = () => {
           <RepoCard key={repo.id} repoInfo={repo} />
         ))}
       </ContentWrapper>
+      {data?.items.length < 1 && <NoResult>No Result</NoResult>}
       {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={setTarget} />}
     </Container>
   )
@@ -94,6 +95,13 @@ const SearchButton = styled.button`
   padding: 8px 12px;
   border: none;
   cursor: pointer;
+`
+
+const NoResult = styled.div`
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: #483d8b;
 `
 
 const TargetDiv = styled.div`

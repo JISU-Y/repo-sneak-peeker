@@ -7,9 +7,9 @@ const IssueCard = ({ repoName, issue }) => {
     <ContentContainer isOpen={issue.state === "open"}>
       <IssueInfoWrapper href={issue.html_url} target="_blank" rel="noopener noreferrer">
         <RepoTitle>{repoName ?? "repo title"}</RepoTitle>
-        <IssueTitle>{issue.title ?? "이슈 title"}</IssueTitle>
+        <IssueTitle>{issue.title.length > 30 ? `${issue.title.slice(0, 30)}...` : issue.title}</IssueTitle>
         <StateTag>{issue.state}</StateTag>
-        <IssueBody>{issue.body.length > 50 ? `${issue.body.slice(0, 50)}...` : issue.body}</IssueBody>
+        <IssueBody>{issue?.body?.length > 50 ? `${issue?.body.slice(0, 50)}...` : issue?.body}</IssueBody>
         <BottomInfo>
           <Writer>{issue.user.login}</Writer>
           <Time>{issue.created_at.split("T")[0]}</Time>
@@ -20,6 +20,7 @@ const IssueCard = ({ repoName, issue }) => {
 }
 
 const ContentContainer = styled(ContentBox)`
+  margin: 0;
   background-color: ${({ isOpen }) => (isOpen ? "#483d8b" : "#483d8b54")};
 `
 

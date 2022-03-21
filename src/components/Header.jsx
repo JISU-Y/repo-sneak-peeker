@@ -18,7 +18,7 @@ const Header = ({ title }) => {
 
   return (
     <Container>
-      <ChevronLeft fill={"black"} onClick={backToPrevPage} isInMain={presentPage === ""} />
+      <ChevronLeft fill={"black"} onClick={backToPrevPage} isinmain={presentPage === ""} />
       <Title>{title ?? "Header"}</Title>
       {presentPage === "" && <Button onClick={goToRepoPage}>보관함 가기</Button>}
     </Container>

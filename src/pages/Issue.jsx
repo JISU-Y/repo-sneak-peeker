@@ -4,12 +4,13 @@ import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
 import IssueCard from "../components/IssueCard"
+import PageNavigation from "../components/PageNavigation"
 import { showCurrentRepo } from "../redux/reducers/issueReducer"
 import { Container } from "../styles/commonComponent"
 
 const Issue = () => {
   const dispatch = useDispatch()
-  const { repo, issues } = useSelector((state) => state.issueData)
+  const { repo, pageItems } = useSelector((state) => state.issueData)
 
   useEffect(() => {
     dispatch(showCurrentRepo())
@@ -23,10 +24,11 @@ const Issue = () => {
         <Owner>owner : {repo?.owner.login ?? "JISU-Y"}</Owner>
       </RepoInfoBox>
       <IssueContainer>
-        {issues?.map((issue) => (
+        {pageItems?.map((issue) => (
           <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />
         ))}
       </IssueContainer>
+      <PageNavigation />
     </Container>
   )
 }
