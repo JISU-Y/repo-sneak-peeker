@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
 import RepoCard from "../components/RepoCard"
+import Skeleton from "../components/SkeletonRepo"
 import { cleanupFeedback, fetchRepos, loadMore } from "../redux/reducers/repoReducer"
 import { Container } from "../styles/commonComponent"
 
@@ -33,7 +34,6 @@ const Main = () => {
     const onIntersect = async ([entry], observer) => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target)
-        // next page
         dispatch(loadMore(page + 1))
         observer.observe(entry.target)
       }
@@ -63,9 +63,7 @@ const Main = () => {
           <Input placeholder="repo를 검색해주세요." value={text} onChange={(e) => setText(e.target.value)} />
           <SearchButton type="submit">검색</SearchButton>
         </SearchForm>
-        {pageItems?.map((repo) => (
-          <MemoRepoCard key={repo.id} repo={repo} />
-        ))}
+        {loading ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />) : pageItems?.map((repo) => <MemoRepoCard key={repo.id} repo={repo} />)}
       </ContentWrapper>
       {data?.items.length < 1 && <NoResult>No Result</NoResult>}
       {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={setTarget} />}

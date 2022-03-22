@@ -40,13 +40,12 @@ export const issueReducer = createSlice({
     selectRepo: (state, action) => {
       const selectedRepoFromLocal = JSON.parse(localStorage.getItem("selectedRepo"))
       const selectedRepo = action.payload
-      state.page = 1
-      localStorage.removeItem("selectedRepo")
       localStorage.setItem("selectedRepo", JSON.stringify({ ...selectedRepoFromLocal, repo: selectedRepo }))
       state.repo = selectedRepo
     },
     showCurrentRepo: (state) => {
       const selectedRepo = JSON.parse(localStorage.getItem("selectedRepo"))
+      if (!selectedRepo?.issues) return
       state.repo = selectedRepo.repo
       state.issues = selectedRepo.issues
       state.totalPage = Math.ceil(selectedRepo.issues.length / 6)
@@ -55,6 +54,13 @@ export const issueReducer = createSlice({
     movePage: (state, action) => {
       const page = action.payload
       state.pageItems = splitIssuesByPage(state.issues, page, state)
+    },
+    cleanupSelectedRepo: (state) => {
+      localStorage.removeItem("selectedRepo")
+      state.page = 1
+      state.totalPage = 0
+      state.issues = []
+      state.pageItems = []
     },
   },
   extraReducers: (builder) => {
@@ -80,6 +86,6 @@ export const issueReducer = createSlice({
   },
 })
 
-export const { selectRepo, showCurrentRepo, movePage } = issueReducer.actions
+export const { selectRepo, showCurrentRepo, movePage, cleanupSelectedRepo } = issueReducer.actions
 
 export default issueReducer.reducer

@@ -50,6 +50,7 @@ const PageContainer = styled.div`
   padding: 16px 0;
   width: 100%;
   background-color: lavender;
+  user-select: none;
 `
 
 const PagesWrapper = styled.div`

@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 export const Container = styled.div`
   width: 100%;
@@ -28,4 +28,37 @@ export const Tag = styled.div`
   border-radius: 4px;
   color: white;
   cursor: default;
+`
+
+export const loadingAnimation = css`
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(to right, #ddd, #eee, #ddd);
+    animation: loading 1.5s infinite linear;
+  }
+
+  @keyframes loading {
+    0% {
+      transform: translateX(0);
+    }
+    50%,
+    100% {
+      transform: translateX(440px);
+    }
+  }
+`
+
+export const GrayBox = styled.div`
+  width: 150px;
+  height: 20px;
+  background-color: lightgray;
+  position: relative;
+  overflow: hidden;
+
+  ${loadingAnimation}
 `
