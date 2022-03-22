@@ -37,13 +37,13 @@ export const repoReducer = createSlice({
       const reposFromLocal = JSON.parse(localStorage.getItem("repos"))
       const { savedRepos } = current(state)
 
-      if (reposFromLocal.find((el) => el.id === repo.id)) {
+      if (reposFromLocal?.find((el) => el.id === repo.id)) {
         state.feedback = {
           type: "failure",
           msg: "이미 추가하신 repo입니다.",
         }
         return
-      } else if (reposFromLocal.length >= 4) {
+      } else if (reposFromLocal?.length >= 4) {
         state.feedback = {
           type: "failure",
           msg: "최대 저장 repo를 초과하였습니다. (최대 4개)",
@@ -51,7 +51,7 @@ export const repoReducer = createSlice({
         return
       }
 
-      localStorage.setItem("repos", JSON.stringify([...reposFromLocal, repo]))
+      localStorage.setItem("repos", JSON.stringify([...savedRepos, repo]))
       state.savedRepos = [...savedRepos, repo]
       state.feedback = {
         type: "success",
