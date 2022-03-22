@@ -34,7 +34,7 @@ const RepoCard = ({ repoInfo, useDelete = false }) => {
       <RepoInfoWrapper>
         <TitleAndLang>
           <RepoName>{repoInfo.name ?? "레포 이름"}</RepoName>
-          <LanguageTag>{repoInfo?.language}</LanguageTag>
+          {repoInfo?.language && <LanguageTag>{repoInfo?.language}</LanguageTag>}
         </TitleAndLang>
         <Description>{repoInfo.description ?? "레포 description"}</Description>
         <Owner>owner : {repoInfo.owner.login ?? "JISU-Y"}</Owner>
@@ -74,7 +74,7 @@ const Button = styled.button`
   font-size: 18px;
   font-weight: bold;
   color: white;
-  background-color: pink;
+  background-color: #7d6dc1;
   border: none;
   border-radius: 4px;
   cursor: pointer;

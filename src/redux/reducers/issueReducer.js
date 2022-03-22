@@ -40,6 +40,7 @@ export const issueReducer = createSlice({
     selectRepo: (state, action) => {
       const selectedRepoFromLocal = JSON.parse(localStorage.getItem("selectedRepo"))
       const selectedRepo = action.payload
+      state.page = 1
       localStorage.setItem("selectedRepo", JSON.stringify({ ...selectedRepoFromLocal, repo: selectedRepo }))
       state.repo = selectedRepo
     },

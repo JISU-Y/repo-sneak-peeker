@@ -13,6 +13,7 @@ export const ContentBox = styled.div`
   align-items: center;
   margin: 12px 0;
   border-radius: 4px;
+  background-color: #f6ebff;
   border: 1px solid rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
@@ -23,7 +24,7 @@ export const ContentBox = styled.div`
 
 export const Tag = styled.div`
   padding: 4px 8px;
-  background-color: deeppink;
+  background-color: #00c89d;
   width: fit-content;
   border-radius: 4px;
   color: white;

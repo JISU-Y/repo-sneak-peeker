@@ -44,7 +44,7 @@ const Button = styled.button`
   font-size: 18px;
   font-weight: bold;
   color: white;
-  background-color: pink;
+  background-color: #f6ebff;
   border: none;
   border-radius: 4px;
 `

@@ -49,7 +49,7 @@ const PageContainer = styled.div`
   align-items: center;
   padding: 16px 0;
   width: 100%;
-  background-color: lavender;
+  background-color: #f6ebff;
   user-select: none;
 `
 
@@ -63,7 +63,7 @@ const PageNumberBox = styled.div``
 
 const PageNumber = styled.span`
   cursor: pointer;
-  color: ${({ isActive }) => (isActive ? "skyblue" : "black")};
+  color: ${({ isActive }) => (isActive ? "#00C89D" : "black")};
 `
 
 const Dots = styled.span`

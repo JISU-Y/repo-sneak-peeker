@@ -8,7 +8,7 @@ import Skeleton from "../components/SkeletonRepo"
 import { cleanupFeedback, fetchRepos, loadMore } from "../redux/reducers/repoReducer"
 import { Container } from "../styles/commonComponent"
 
-const HeaderComponent = () => <Header title="메인" />
+const HeaderComponent = () => <Header title="레포 검색" />
 
 const MemoHeader = memo(HeaderComponent)
 
@@ -99,6 +99,7 @@ const SearchButton = styled.button`
   height: 100%;
   padding: 8px 12px;
   border: none;
+  background-color: #f6ebff;
   cursor: pointer;
 `
 
