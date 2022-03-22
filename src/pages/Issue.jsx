@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
 import IssueCard from "../components/IssueCard"
+import NoList from "../components/NoList"
 import PageNavigation from "../components/PageNavigation"
 import Skeleton from "../components/SkeletonIssue"
 import { showCurrentRepo } from "../redux/reducers/issueReducer"
@@ -24,12 +25,18 @@ const Issue = () => {
         <RepoName>{repo?.name ?? "레포 이름"}</RepoName>
         <Owner>owner : {repo?.owner.login ?? "JISU-Y"}</Owner>
       </RepoInfoBox>
-      <IssueContainer>
-        {loading
-          ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
-          : pageItems?.map((issue) => <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />)}
-      </IssueContainer>
-      <PageNavigation />
+      {pageItems?.length > 0 ? (
+        <>
+          <IssueContainer>
+            {loading
+              ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
+              : pageItems.map((issue) => <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />)}
+          </IssueContainer>
+          <PageNavigation />
+        </>
+      ) : (
+        loading || <NoList msg="현재 레포에 등록된 이슈가 없습니다." />
+      )}
     </Container>
   )
 }

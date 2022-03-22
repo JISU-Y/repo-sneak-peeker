@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
+import NoList from "../components/NoList"
 import RepoCard from "../components/RepoCard"
 import Skeleton from "../components/SkeletonRepo"
 import { cleanupFeedback, fetchRepos, loadMore } from "../redux/reducers/repoReducer"
@@ -65,7 +66,7 @@ const Main = () => {
         </SearchForm>
         {loading ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />) : pageItems?.map((repo) => <MemoRepoCard key={repo.id} repo={repo} />)}
       </ContentWrapper>
-      {data?.items.length < 1 && <NoResult>No Result</NoResult>}
+      {data?.items.length < 1 && <NoList msg="검색 결과가 없습니다." />}
       {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={setTarget} />}
     </Container>
   )

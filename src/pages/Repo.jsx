@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
+import NoList from "../components/NoList"
 import RepoCard from "../components/RepoCard"
 import { cleanupFeedback, showSavedRepos } from "../redux/reducers/repoReducer"
 import { Container } from "../styles/commonComponent"
@@ -24,9 +25,11 @@ const Repo = () => {
     <Container>
       <Header title="레포 보관함" />
       <ContentWrapper>
-        {savedRepos.map((repo) => (
-          <RepoCard key={repo.id} repoInfo={repo} useDelete />
-        ))}
+        {savedRepos ? ( //
+          savedRepos.map((repo) => <RepoCard key={repo.id} repoInfo={repo} useDelete />)
+        ) : (
+          <NoList msg="저장된 레포가 없습니다." />
+        )}
       </ContentWrapper>
     </Container>
   )
@@ -34,6 +37,7 @@ const Repo = () => {
 
 const ContentWrapper = styled.div`
   width: 100%;
+  height: 100%;
   padding: 0 18px 12px;
 `
 
