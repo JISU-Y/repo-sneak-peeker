@@ -1,11 +1,20 @@
-import React, { useEffect, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import Header from "../components/Header"
 import RepoCard from "../components/RepoCard"
+import Skeleton from "../components/SkeletonRepo"
 import { cleanupFeedback, fetchRepos, loadMore } from "../redux/reducers/repoReducer"
 import { Container } from "../styles/commonComponent"
+
+const HeaderComponent = () => <Header title="레포 검색" />
+
+const MemoHeader = memo(HeaderComponent)
+
+const RepoCardComponent = ({ repo }) => <RepoCard key={repo.id} repoInfo={repo} />
+
+const MemoRepoCard = memo(RepoCardComponent)
 
 const Main = () => {
   const [target, setTarget] = useState(null)
@@ -13,7 +22,6 @@ const Main = () => {
   const dispatch = useDispatch()
 
   const { data, pageItems, page, maxPage, feedback, loading } = useSelector((state) => state.repoData)
-  // input에 입력할때마다 불필요한 렌더링 일어나지 않도록 memo 사용하기
 
   const handleSubmit = (e) => {
     if (!text) return
@@ -26,7 +34,6 @@ const Main = () => {
     const onIntersect = async ([entry], observer) => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target)
-        // next page
         dispatch(loadMore(page + 1))
         observer.observe(entry.target)
       }
@@ -50,15 +57,13 @@ const Main = () => {
 
   return (
     <Container>
-      <Header title="메인" />
+      <MemoHeader />
       <ContentWrapper>
         <SearchForm onSubmit={handleSubmit}>
           <Input placeholder="repo를 검색해주세요." value={text} onChange={(e) => setText(e.target.value)} />
           <SearchButton type="submit">검색</SearchButton>
         </SearchForm>
-        {pageItems?.map((repo) => (
-          <RepoCard key={repo.id} repoInfo={repo} />
-        ))}
+        {loading ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />) : pageItems?.map((repo) => <MemoRepoCard key={repo.id} repo={repo} />)}
       </ContentWrapper>
       {data?.items.length < 1 && <NoResult>No Result</NoResult>}
       {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={setTarget} />}
@@ -94,6 +99,7 @@ const SearchButton = styled.button`
   height: 100%;
   padding: 8px 12px;
   border: none;
+  background-color: #f6ebff;
   cursor: pointer;
 `
 

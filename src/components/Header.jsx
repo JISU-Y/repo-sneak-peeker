@@ -49,6 +49,9 @@ const Title = styled.h3`
 
 const Button = styled.button`
   padding: 4px 8px;
+  border: 1px solid #483d8b;
+  background-color: #f6ebff;
+  border-radius: 4px;
   cursor: pointer;
 `
 

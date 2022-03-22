@@ -5,12 +5,13 @@ import styled from "styled-components"
 import Header from "../components/Header"
 import IssueCard from "../components/IssueCard"
 import PageNavigation from "../components/PageNavigation"
+import Skeleton from "../components/SkeletonIssue"
 import { showCurrentRepo } from "../redux/reducers/issueReducer"
 import { Container } from "../styles/commonComponent"
 
 const Issue = () => {
   const dispatch = useDispatch()
-  const { repo, pageItems } = useSelector((state) => state.issueData)
+  const { repo, pageItems, loading } = useSelector((state) => state.issueData)
 
   useEffect(() => {
     dispatch(showCurrentRepo())
@@ -24,9 +25,9 @@ const Issue = () => {
         <Owner>owner : {repo?.owner.login ?? "JISU-Y"}</Owner>
       </RepoInfoBox>
       <IssueContainer>
-        {pageItems?.map((issue) => (
-          <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />
-        ))}
+        {loading
+          ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
+          : pageItems?.map((issue) => <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />)}
       </IssueContainer>
       <PageNavigation />
     </Container>
