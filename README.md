@@ -1,6 +1,6 @@
-# wanted-codestates-project-1
+# Repo Sneak-peeker
 
-원티드 프리온보딩 페이히어 과제
+깃헙 레포 및 이슈 저장 웹 앱
 
 ## 💻 Demo
 
@@ -9,51 +9,6 @@
 ## 🛠️ 기술 스택
 
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/Styled%20Components-DB7093?style=for-the-badge&logo=StyledComponents&logoColor=white"/></a>
-
-## 🕹  설치 및 시작방법
-
-1. github repo 이동
-
-	https://github.com/JISU-Y/wanted-codestates-project-1
-
-2. code 버튼 클릭 및 HTTPS url 복사 (클립보드 버튼 클릭)
-
-	![2](https://user-images.githubusercontent.com/80020227/158720778-97259019-a572-4e40-905e-286f5925fc12.JPG)
-
-3. 컴퓨터에서 커맨트창 띄우고 원하는 폴더 위치로 이동
-
-	ex)
-	```
-	C:Users\username> mkdir wantedPayhere
-	C:Users\username> cd wantedPayhere
-	```
-
-4. git clone
-
-	```
-	C:Users\username\wantedPayhere> git clone https://github.com/JISU-Y/wanted-codestates-project-1.git
-	```
-
-5. wanted-codestates-project-6-10 폴더 이동 및 에디터 열기
-
-	```
-	C:Users\username\wantedPayhere> cd wanted-codestates-project-1
-	C:Users\username\wantedPayhere\wanted-codestates-project-1> code .
-	```
-
-6. 에디터 열렸으면 터미널 open 및 다음과 같이 실행
-
-	- install dependencies
-		```
-		$ npm install
-		```
-
-	- serve with hot reload at localhost:3000
-		```
-		$ npm start
-		```
-
-<br>
 
 ## 📄 페이지
 - 메인 페이지 (검색 페이지)
