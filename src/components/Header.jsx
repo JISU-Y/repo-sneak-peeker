@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react"
+import { memo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import ChevronLeft from "../icons/ChevronLeft"
 
-const Header = ({ title }) => {
+const Header = memo(({ title }) => {
   const location = useLocation()
   const navigate = useNavigate()
-  const [presentPage, setPresentPage] = useState("")
+  const [isHomePage, setIsHomePage] = useState(true)
 
   useEffect(() => {
-    setPresentPage(location.pathname.slice(1))
+    setIsHomePage(location.pathname === "/")
   }, [location.pathname])
 
   const backToPrevPage = () => navigate(-1)
@@ -18,12 +19,12 @@ const Header = ({ title }) => {
 
   return (
     <Container>
-      <ChevronLeft fill={"black"} onClick={backToPrevPage} isinmain={presentPage === ""} />
+      {!isHomePage && <ChevronLeft fill={"black"} onClick={backToPrevPage} />}
       <Title>{title ?? "Header"}</Title>
-      {presentPage === "" && <Button onClick={goToRepoPage}>보관함 가기</Button>}
+      {isHomePage && <Button onClick={goToRepoPage}>보관함 가기</Button>}
     </Container>
   )
-}
+})
 
 const Container = styled.div`
   position: relative;
@@ -52,6 +53,7 @@ const Button = styled.button`
   border: 1px solid #483d8b;
   background-color: #f6ebff;
   border-radius: 4px;
+  margin-left: auto;
   cursor: pointer;
 `
 

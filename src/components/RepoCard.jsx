@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { useDispatch } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
@@ -6,7 +6,7 @@ import { fetchIssues, selectRepo } from "../redux/reducers/issueReducer"
 import { addRepoToStorage, deleteRepoFromStorage } from "../redux/reducers/repoReducer"
 import { ContentBox, Tag } from "../styles/commonComponent"
 
-const RepoCard = ({ repoInfo, useDelete = false }) => {
+const RepoCard = memo(({ repoInfo, useDelete = false }) => {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -42,7 +42,7 @@ const RepoCard = ({ repoInfo, useDelete = false }) => {
       <Button onClick={useDelete ? deleteRepo : addRepo}>레포 {useDelete ? "삭제" : "추가"}</Button>
     </ContentBox>
   )
-}
+})
 
 const RepoInfoWrapper = styled.div`
   display: flex;

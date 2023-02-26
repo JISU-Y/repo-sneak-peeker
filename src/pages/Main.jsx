@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
@@ -8,14 +8,6 @@ import RepoCard from "../components/RepoCard"
 import Skeleton from "../components/SkeletonRepo"
 import { cleanupFeedback, fetchRepos, loadMore } from "../redux/reducers/repoReducer"
 import { Container } from "../styles/commonComponent"
-
-const HeaderComponent = () => <Header title="레포 검색" />
-
-const MemoHeader = memo(HeaderComponent)
-
-const RepoCardComponent = ({ repo }) => <RepoCard key={repo.id} repoInfo={repo} />
-
-const MemoRepoCard = memo(RepoCardComponent)
 
 const Main = () => {
   const [target, setTarget] = useState(null)
@@ -58,13 +50,13 @@ const Main = () => {
 
   return (
     <Container>
-      <MemoHeader />
+      <Header title="레포 검색" />
       <ContentWrapper>
         <SearchForm onSubmit={handleSubmit}>
           <Input placeholder="repo를 검색해주세요." value={text} onChange={(e) => setText(e.target.value)} />
           <SearchButton type="submit">검색</SearchButton>
         </SearchForm>
-        {loading ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />) : pageItems?.map((repo) => <MemoRepoCard key={repo.id} repo={repo} />)}
+        {loading ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />) : pageItems?.map((repo) => <RepoCard key={repo.id} repoInfo={repo} />)}
       </ContentWrapper>
       {data?.items.length < 1 && <NoList msg="검색 결과가 없습니다." />}
       {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={setTarget} />}
@@ -102,13 +94,6 @@ const SearchButton = styled.button`
   border: none;
   background-color: #f6ebff;
   cursor: pointer;
-`
-
-const NoResult = styled.div`
-  text-align: center;
-  font-size: 30px;
-  font-weight: bold;
-  color: #483d8b;
 `
 
 const TargetDiv = styled.div`
