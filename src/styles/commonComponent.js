@@ -17,7 +17,7 @@ export const ContentBox = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
-  cursor: pointer;
+  cursor: default;
   &:hover {
     transform: translateY(-5px);
   }
