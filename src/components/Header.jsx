@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
+import { memo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import ChevronLeft from "../icons/ChevronLeft"
 
-const Header = ({ title }) => {
+const Header = memo(({ title }) => {
   const location = useLocation()
   const navigate = useNavigate()
   const [presentPage, setPresentPage] = useState("")
@@ -23,7 +24,7 @@ const Header = ({ title }) => {
       {presentPage === "" && <Button onClick={goToRepoPage}>보관함 가기</Button>}
     </Container>
   )
-}
+})
 
 const Container = styled.div`
   position: relative;
