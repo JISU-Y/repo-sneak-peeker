@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
-import { BASE_URL } from "./repoReducer"
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
+import { BASE_URL } from './repoReducer'
 
 const initialState = {
   repo: null,
@@ -7,7 +7,7 @@ const initialState = {
   issues: [],
   pageItems: [],
   page: 1,
-  totalPage: 0,
+  totalPage: 0
 }
 
 const splitIssuesByPage = (items, page, state) => {
@@ -25,27 +25,30 @@ const splitIssuesByPage = (items, page, state) => {
   }
 }
 
-export const fetchIssues = createAsyncThunk("issueData/fetchIssueData", async (fullName) => {
+export const fetchIssues = createAsyncThunk('issueData/fetchIssueData', async (fullName) => {
   const res = await fetch(`${BASE_URL}repos/${fullName}/issues`)
   const data = await res.json()
-  const selectedRepo = JSON.parse(localStorage.getItem("selectedRepo"))
-  localStorage.setItem("selectedRepo", JSON.stringify({ ...selectedRepo, issues: data }))
+  const selectedRepo = JSON.parse(localStorage.getItem('selectedRepo'))
+  localStorage.setItem('selectedRepo', JSON.stringify({ ...selectedRepo, issues: data }))
   return data
 })
 
 export const issueReducer = createSlice({
-  name: "issue",
+  name: 'issue',
   initialState,
   reducers: {
     selectRepo: (state, action) => {
-      const selectedRepoFromLocal = JSON.parse(localStorage.getItem("selectedRepo"))
+      const selectedRepoFromLocal = JSON.parse(localStorage.getItem('selectedRepo'))
       const selectedRepo = action.payload
       state.page = 1
-      localStorage.setItem("selectedRepo", JSON.stringify({ ...selectedRepoFromLocal, repo: selectedRepo }))
+      localStorage.setItem(
+        'selectedRepo',
+        JSON.stringify({ ...selectedRepoFromLocal, repo: selectedRepo })
+      )
       state.repo = selectedRepo
     },
     showCurrentRepo: (state) => {
-      const selectedRepo = JSON.parse(localStorage.getItem("selectedRepo"))
+      const selectedRepo = JSON.parse(localStorage.getItem('selectedRepo'))
       if (!selectedRepo?.issues) return
       state.repo = selectedRepo.repo
       state.issues = selectedRepo.issues
@@ -57,12 +60,12 @@ export const issueReducer = createSlice({
       state.pageItems = splitIssuesByPage(state.issues, page, state)
     },
     cleanupSelectedRepo: (state) => {
-      localStorage.removeItem("selectedRepo")
+      localStorage.removeItem('selectedRepo')
       state.page = 1
       state.totalPage = 0
       state.issues = []
       state.pageItems = []
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -81,10 +84,10 @@ export const issueReducer = createSlice({
         state.issues = []
         state.error = {
           message: action.error.message,
-          stack: action.error.stack,
+          stack: action.error.stack
         }
       })
-  },
+  }
 })
 
 export const { selectRepo, showCurrentRepo, movePage, cleanupSelectedRepo } = issueReducer.actions

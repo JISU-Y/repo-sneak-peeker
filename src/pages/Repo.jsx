@@ -1,11 +1,11 @@
-import React, { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import styled from "styled-components"
-import Header from "../components/Header"
-import NoList from "../components/NoList"
-import RepoCard from "../components/RepoCard"
-import { cleanupFeedback, showSavedRepos } from "../redux/reducers/repoReducer"
-import { Container } from "../styles/commonComponent"
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
+import Header from '../components/Header'
+import NoList from '../components/NoList'
+import RepoCard from '../components/RepoCard'
+import { cleanupFeedback, showSavedRepos } from '../redux/reducers/repoReducer'
+import { Container } from '../styles/commonComponent'
 
 const Repo = () => {
   const dispatch = useDispatch()

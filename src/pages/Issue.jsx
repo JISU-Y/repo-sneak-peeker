@@ -1,14 +1,14 @@
-import React, { useEffect } from "react"
-import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
-import styled from "styled-components"
-import Header from "../components/Header"
-import IssueCard from "../components/IssueCard"
-import NoList from "../components/NoList"
-import PageNavigation from "../components/PageNavigation"
-import Skeleton from "../components/SkeletonIssue"
-import { showCurrentRepo } from "../redux/reducers/issueReducer"
-import { Container } from "../styles/commonComponent"
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import styled from 'styled-components'
+import Header from '../components/Header'
+import IssueCard from '../components/IssueCard'
+import NoList from '../components/NoList'
+import PageNavigation from '../components/PageNavigation'
+import Skeleton from '../components/SkeletonIssue'
+import { showCurrentRepo } from '../redux/reducers/issueReducer'
+import { Container } from '../styles/commonComponent'
 
 const Issue = () => {
   const dispatch = useDispatch()
@@ -22,15 +22,17 @@ const Issue = () => {
     <Container>
       <Header title="이슈 리스트" />
       <RepoInfoBox>
-        <RepoName>{repo?.name ?? "레포 이름"}</RepoName>
-        <Owner>owner : {repo?.owner.login ?? "JISU-Y"}</Owner>
+        <RepoName>{repo?.name ?? '레포 이름'}</RepoName>
+        <Owner>owner : {repo?.owner.login ?? 'JISU-Y'}</Owner>
       </RepoInfoBox>
       {pageItems?.length > 0 ? (
         <>
           <IssueContainer>
             {loading
               ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
-              : pageItems.map((issue) => <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />)}
+              : pageItems.map((issue) => (
+                  <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />
+                ))}
           </IssueContainer>
           <PageNavigation />
         </>
