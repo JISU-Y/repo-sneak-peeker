@@ -1,10 +1,10 @@
-import React, { memo } from "react"
-import { useDispatch } from "react-redux"
-import { useLocation, useNavigate } from "react-router-dom"
-import styled from "styled-components"
-import { fetchIssues, selectRepo } from "../redux/reducers/issueReducer"
-import { addRepoToStorage, deleteRepoFromStorage } from "../redux/reducers/repoReducer"
-import { ContentBox, Tag } from "../styles/commonComponent"
+import React, { memo } from 'react'
+import { useDispatch } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import { fetchIssues, selectRepo } from '../redux/reducers/issueReducer'
+import { addRepoToStorage, deleteRepoFromStorage } from '../redux/reducers/repoReducer'
+import { ContentBox, Tag } from '../styles/commonComponent'
 
 const RepoCard = memo(({ repoInfo, useDelete = false }) => {
   const location = useLocation()
@@ -23,23 +23,23 @@ const RepoCard = memo(({ repoInfo, useDelete = false }) => {
   }
 
   const gotoIssues = () => {
-    if (location.pathname === "/") return
+    if (location.pathname === '/') return
     dispatch(selectRepo(repoInfo))
     dispatch(fetchIssues(repoInfo.full_name))
-    navigate("/issue")
+    navigate('/issue')
   }
 
   return (
     <ContentBox onClick={gotoIssues}>
       <RepoInfoWrapper>
         <TitleAndLang>
-          <RepoName>{repoInfo.name ?? "레포 이름"}</RepoName>
+          <RepoName>{repoInfo.name ?? '레포 이름'}</RepoName>
           {repoInfo?.language && <LanguageTag>{repoInfo?.language}</LanguageTag>}
         </TitleAndLang>
-        <Description>{repoInfo.description ?? "레포 description"}</Description>
-        <Owner>owner : {repoInfo.owner.login ?? "JISU-Y"}</Owner>
+        <Description>{repoInfo.description ?? '레포 description'}</Description>
+        <Owner>owner : {repoInfo.owner.login ?? 'JISU-Y'}</Owner>
       </RepoInfoWrapper>
-      <Button onClick={useDelete ? deleteRepo : addRepo}>레포 {useDelete ? "삭제" : "추가"}</Button>
+      <Button onClick={useDelete ? deleteRepo : addRepo}>레포 {useDelete ? '삭제' : '추가'}</Button>
     </ContentBox>
   )
 })

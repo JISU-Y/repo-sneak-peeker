@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 
-export const BASE_URL = "https://api.github.com/"
+export const BASE_URL = 'https://api.github.com/'
 
 const initialFeedback = {
-  type: "",
-  msg: "",
+  type: '',
+  msg: ''
 }
 
 const initialState = {
@@ -15,58 +15,60 @@ const initialState = {
   pageItems: [],
   page: 0,
   maxPage: null,
-  feedback: initialFeedback,
+  feedback: initialFeedback
 }
 
-export const fetchRepos = createAsyncThunk("repoData/fetchRepoData", async (word) => {
+export const fetchRepos = createAsyncThunk('repoData/fetchRepoData', async (word) => {
   const res = await fetch(`${BASE_URL}search/repositories?q=${word}`)
   const data = await res.json()
   return data
 })
 
 export const repoReducer = createSlice({
-  name: "repo",
+  name: 'repo',
   initialState,
   reducers: {
     showSavedRepos: (state) => {
-      const data = JSON.parse(localStorage.getItem("repos"))
+      const data = JSON.parse(localStorage.getItem('repos'))
       state.savedRepos = data
     },
     addRepoToStorage: (state, action) => {
       const repo = action.payload
-      const reposFromLocal = JSON.parse(localStorage.getItem("repos"))
+      const reposFromLocal = JSON.parse(localStorage.getItem('repos'))
       const { savedRepos } = current(state)
 
       if (reposFromLocal?.find((el) => el.id === repo.id)) {
         state.feedback = {
-          type: "failure",
-          msg: "이미 추가하신 repo입니다.",
+          type: 'failure',
+          msg: '이미 추가하신 repo입니다.'
         }
         return
       } else if (reposFromLocal?.length >= 4) {
         state.feedback = {
-          type: "failure",
-          msg: "최대 저장 repo를 초과하였습니다. (최대 4개)",
+          type: 'failure',
+          msg: '최대 저장 repo를 초과하였습니다. (최대 4개)'
         }
         return
       }
 
-      localStorage.setItem("repos", JSON.stringify([...savedRepos, repo]))
+      localStorage.setItem('repos', JSON.stringify([...savedRepos, repo]))
       state.savedRepos = [...savedRepos, repo]
       state.feedback = {
-        type: "success",
-        msg: "repo를 추가하였습니다.",
+        type: 'success',
+        msg: 'repo를 추가하였습니다.'
       }
     },
     deleteRepoFromStorage: (state, action) => {
       const { id } = action.payload
-      const filteredRepos = JSON.parse(localStorage.getItem("repos")).filter((repo) => repo.id !== id)
+      const filteredRepos = JSON.parse(localStorage.getItem('repos')).filter(
+        (repo) => repo.id !== id
+      )
 
-      localStorage.setItem("repos", JSON.stringify(filteredRepos))
+      localStorage.setItem('repos', JSON.stringify(filteredRepos))
       state.savedRepos = filteredRepos
       state.feedback = {
-        type: "success",
-        msg: "repo를 삭제하였습니다.",
+        type: 'success',
+        msg: 'repo를 삭제하였습니다.'
       }
     },
     loadMore: (state, action) => {
@@ -80,7 +82,7 @@ export const repoReducer = createSlice({
     },
     cleanupFeedback: (state) => {
       state.feedback = initialFeedback
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -103,12 +105,18 @@ export const repoReducer = createSlice({
         state.page = 0
         state.error = {
           message: action.error.message,
-          stack: action.error.stack,
+          stack: action.error.stack
         }
       })
-  },
+  }
 })
 
-export const { addRepoToStorage, showSavedRepos, deleteRepoFromStorage, loadMore, cleanupFeedback } = repoReducer.actions
+export const {
+  addRepoToStorage,
+  showSavedRepos,
+  deleteRepoFromStorage,
+  loadMore,
+  cleanupFeedback
+} = repoReducer.actions
 
 export default repoReducer.reducer

@@ -1,9 +1,10 @@
-import { Route, Routes } from "react-router-dom"
-import styled from "styled-components"
-import Issue from "./pages/Issue"
-import Main from "./pages/Main"
-import Repo from "./pages/Repo"
-import GlobalStyle from "./styles/GlobalStyle"
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import styled from 'styled-components'
+import Issue from './pages/Issue'
+import Main from './pages/Main'
+import Repo from './pages/Repo'
+import GlobalStyle from './styles/GlobalStyle'
 
 function App() {
   return (

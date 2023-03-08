@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
-import styled from "styled-components"
-import Header from "../components/Header"
-import NoList from "../components/NoList"
-import RepoCard from "../components/RepoCard"
-import Skeleton from "../components/SkeletonRepo"
-import { cleanupFeedback, fetchRepos, loadMore } from "../redux/reducers/repoReducer"
-import { Container } from "../styles/commonComponent"
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+import Header from '../components/Header'
+import NoList from '../components/NoList'
+import RepoCard from '../components/RepoCard'
+import Skeleton from '../components/SkeletonRepo'
+import { cleanupFeedback, fetchRepos, loadMore } from '../redux/reducers/repoReducer'
+import { Container } from '../styles/commonComponent'
 
 const Main = () => {
   const [target, setTarget] = useState(null)
-  const [text, setText] = useState("")
+  const [text, setText] = useState('')
   const dispatch = useDispatch()
 
-  const { data, pageItems, page, maxPage, feedback, loading } = useSelector((state) => state.repoData)
+  const { data, pageItems, page, maxPage, feedback, loading } = useSelector(
+    (state) => state.repoData
+  )
 
   const handleSubmit = (e) => {
     if (!text) return
     e.preventDefault()
     dispatch(fetchRepos(text))
-    setText("")
+    setText('')
   }
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const Main = () => {
     let observer
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
+        threshold: 0.4
       })
       observer.observe(target)
     }
@@ -53,10 +55,16 @@ const Main = () => {
       <Header title="레포 검색" />
       <ContentWrapper>
         <SearchForm onSubmit={handleSubmit}>
-          <Input placeholder="repo를 검색해주세요." value={text} onChange={(e) => setText(e.target.value)} />
+          <Input
+            placeholder="repo를 검색해주세요."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
           <SearchButton type="submit">검색</SearchButton>
         </SearchForm>
-        {loading ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />) : pageItems?.map((repo) => <RepoCard key={repo.id} repoInfo={repo} />)}
+        {loading
+          ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />)
+          : pageItems?.map((repo) => <RepoCard key={repo.id} repoInfo={repo} />)}
       </ContentWrapper>
       {data?.items.length < 1 && <NoList msg="검색 결과가 없습니다." />}
       {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={setTarget} />}

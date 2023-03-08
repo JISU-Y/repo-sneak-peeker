@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
-import styled from "styled-components"
-import ChevronLeft from "../icons/ChevronLeft"
-import ChevronRight from "../icons/ChevronRight"
-import { movePage } from "../redux/reducers/issueReducer"
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import styled from 'styled-components'
+import ChevronLeft from '../icons/ChevronLeft'
+import ChevronRight from '../icons/ChevronRight'
+import { movePage } from '../redux/reducers/issueReducer'
 
 const PageNavigation = () => {
   const dispatch = useDispatch()
@@ -24,7 +24,13 @@ const PageNavigation = () => {
 
   return (
     <PageContainer>
-      <ChevronLeft width="0.7rem" height="0.7rem" fill={"black"} onClick={goPrev} cursor="pointer" />
+      <ChevronLeft
+        width="0.7rem"
+        height="0.7rem"
+        fill={'black'}
+        onClick={goPrev}
+        cursor="pointer"
+      />
       <PagesWrapper>
         {Array.from(pageNumbers, (el) => (
           <PageNumberBox key={el}>
@@ -38,7 +44,13 @@ const PageNavigation = () => {
           </PageNumberBox>
         ))}
       </PagesWrapper>
-      <ChevronRight width="0.7rem" height="0.7rem" fill={"black"} onClick={goNext} cursor="pointer" />
+      <ChevronRight
+        width="0.7rem"
+        height="0.7rem"
+        fill={'black'}
+        onClick={goNext}
+        cursor="pointer"
+      />
     </PageContainer>
   )
 }
@@ -63,7 +75,7 @@ const PageNumberBox = styled.div``
 
 const PageNumber = styled.span`
   cursor: pointer;
-  color: ${({ isActive }) => (isActive ? "#00C89D" : "black")};
+  color: ${({ isActive }) => (isActive ? '#00C89D' : 'black')};
 `
 
 const Dots = styled.span`
