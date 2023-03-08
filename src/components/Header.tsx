@@ -6,10 +6,10 @@ import styled from 'styled-components'
 import ChevronLeft from '../icons/ChevronLeft'
 
 interface HeaderProps {
-  title: string;
+  title: string
 }
 
-const Header = memo(({ title }: HeaderProps) => {
+function Header({ title }: HeaderProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const [isHomePage, setIsHomePage] = useState(true)
@@ -29,7 +29,7 @@ const Header = memo(({ title }: HeaderProps) => {
       {isHomePage && <Button onClick={goToRepoPage}>보관함 가기</Button>}
     </Container>
   )
-})
+}
 
 const Container = styled.div`
   position: relative;
@@ -62,4 +62,4 @@ const Button = styled.button`
   cursor: pointer;
 `
 
-export default Header
+export default memo(Header)

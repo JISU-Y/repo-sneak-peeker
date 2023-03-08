@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { ContentBox, Tag } from '../styles/commonComponent'
 
+// TODO: typing 필요
 interface IssueCardProps {
   repoName: string
-  issue: any // TODO: typing 필요
+  issue: any
 }
 
 const IssueCard = ({ repoName, issue }: IssueCardProps) => {

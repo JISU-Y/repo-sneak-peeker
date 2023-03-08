@@ -6,7 +6,7 @@ import { fetchIssues, selectRepo } from '../redux/reducers/issueReducer'
 import { addRepoToStorage, deleteRepoFromStorage } from '../redux/reducers/repoReducer'
 import { ContentBox, Tag } from '../styles/commonComponent'
 
-const RepoCard = memo(({ repoInfo, useDelete = false }) => {
+function RepoCard({ repoInfo, useDelete = false }) {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -42,7 +42,7 @@ const RepoCard = memo(({ repoInfo, useDelete = false }) => {
       <Button onClick={useDelete ? deleteRepo : addRepo}>레포 {useDelete ? '삭제' : '추가'}</Button>
     </ContentBox>
   )
-})
+}
 
 const RepoInfoWrapper = styled.div`
   display: flex;
@@ -80,4 +80,4 @@ const Button = styled.button`
   cursor: pointer;
 `
 
-export default RepoCard
+export default memo(RepoCard)

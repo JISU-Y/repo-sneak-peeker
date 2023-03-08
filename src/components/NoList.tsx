@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface NoListProps {
-  msg: string;
+  msg: string
 }
 
 const NoList = ({ msg = '리스트가 없습니다.' }: NoListProps) => {

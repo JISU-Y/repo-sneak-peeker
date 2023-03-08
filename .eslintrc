@@ -26,7 +26,7 @@
         "useTabs": false,
         "trailingComma": "none",
         "printWidth": 100,
-        "parser": "flow"
+        "semi": false
       }
     ]
   }
