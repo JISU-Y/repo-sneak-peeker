@@ -28,6 +28,8 @@
         "printWidth": 100,
         "semi": false
       }
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/prop-types": "warn"
   }
 }

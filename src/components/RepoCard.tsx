@@ -1,3 +1,4 @@
+import { RepoItemType } from 'model/Repo'
 import React, { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -6,7 +7,12 @@ import { fetchIssues, selectRepo } from '../redux/reducers/issueReducer'
 import { addRepoToStorage, deleteRepoFromStorage } from '../redux/reducers/repoReducer'
 import { ContentBox, Tag } from '../styles/commonComponent'
 
-function RepoCard({ repoInfo, useDelete = false }) {
+interface RepoCardProps {
+  repoInfo: any
+  useDelete: boolean
+}
+
+function RepoCard({ repoInfo, useDelete = false }: RepoCardProps) {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -25,7 +31,7 @@ function RepoCard({ repoInfo, useDelete = false }) {
   const gotoIssues = () => {
     if (location.pathname === '/') return
     dispatch(selectRepo(repoInfo))
-    dispatch(fetchIssues(repoInfo.full_name))
+    // dispatch(fetchIssues(repoInfo.full_name))
     navigate('/issue')
   }
 
