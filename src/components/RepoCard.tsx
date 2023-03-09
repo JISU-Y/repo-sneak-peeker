@@ -1,4 +1,3 @@
-import { RepoItemType } from 'model/Repo'
 import React, { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -9,7 +8,7 @@ import { ContentBox, Tag } from '../styles/commonComponent'
 
 interface RepoCardProps {
   repoInfo: any
-  useDelete: boolean
+  useDelete?: boolean
 }
 
 function RepoCard({ repoInfo, useDelete = false }: RepoCardProps) {
@@ -17,21 +16,26 @@ function RepoCard({ repoInfo, useDelete = false }: RepoCardProps) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const addRepo = (e) => {
+  const addRepo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation()
+
     dispatch(addRepoToStorage(repoInfo))
   }
 
-  const deleteRepo = (e) => {
+  const deleteRepo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation()
-    const id = repoInfo.id
-    dispatch(deleteRepoFromStorage({ id }))
+
+    dispatch(deleteRepoFromStorage({ id: repoInfo.id }))
   }
 
   const gotoIssues = () => {
-    if (location.pathname === '/') return
+    if (location.pathname === '/') {
+      return
+    }
+
     dispatch(selectRepo(repoInfo))
     // dispatch(fetchIssues(repoInfo.full_name))
+
     navigate('/issue')
   }
 
