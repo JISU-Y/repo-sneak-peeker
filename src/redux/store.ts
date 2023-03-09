@@ -8,3 +8,5 @@ export const store = configureStore({
     issueData: issueReducer
   }
 })
+
+export type RootState = ReturnType<typeof store.getState>

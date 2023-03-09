@@ -19,6 +19,7 @@ export interface RepoInitialType {
   feedback: typeof initialFeedback
 }
 
+// TODO: ReducerType?
 interface ReducerType {
   showSavedRepos: (state: RepoInitialType) => void
   addRepoToStorage: (state: RepoInitialType, action: any) => void

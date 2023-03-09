@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import { RootState } from 'redux/store'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import NoList from '../components/NoList'
@@ -15,18 +16,26 @@ const Main = () => {
   const dispatch = useDispatch()
 
   const { data, pageItems, page, maxPage, feedback, loading } = useSelector(
-    (state) => state.repoData
+    (state: RootState) => state.repoData
   )
 
-  const handleSubmit = (e) => {
-    if (!text) return
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!text) {
+      return
+    }
+
     e.preventDefault()
     dispatch(fetchRepos(text))
     setText('')
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value)
+  }
+
   useEffect(() => {
-    const onIntersect = async ([entry], observer) => {
+    // TODO: 무한 스크롤 로직 수정 필요
+    const onIntersect: IntersectionObserverCallback = async ([entry], observer) => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target)
         dispatch(loadMore(page + 1))
@@ -46,8 +55,10 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(cleanupFeedback())
-    if (!feedback.msg) return
-    alert(feedback.msg)
+
+    if (feedback.msg) {
+      alert(feedback.msg)
+    }
   }, [feedback, dispatch])
 
   return (
@@ -55,19 +66,20 @@ const Main = () => {
       <Header title="레포 검색" />
       <ContentWrapper>
         <SearchForm onSubmit={handleSubmit}>
-          <Input
-            placeholder="repo를 검색해주세요."
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
+          <Input placeholder="repo를 검색해주세요." value={text} onChange={handleInputChange} />
           <SearchButton type="submit">검색</SearchButton>
         </SearchForm>
-        {loading
-          ? Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />)
-          : pageItems?.map((repo) => <RepoCard key={repo.id} repoInfo={repo} />)}
+        {loading && Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />)}
+        {pageItems?.map((repo) => (
+          <RepoCard key={repo.id} repoInfo={repo} />
+        ))}
       </ContentWrapper>
-      {data?.items.length < 1 && <NoList msg="검색 결과가 없습니다." />}
-      {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={setTarget} />}
+      {data?.items.length && (
+        <>
+          {data?.items.length < 1 && <NoList msg="검색 결과가 없습니다." />}
+          {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={target} />}
+        </>
+      )}
     </Container>
   )
 }
