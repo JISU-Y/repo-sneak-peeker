@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
+import { RootState } from 'redux/store'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import IssueCard from '../components/IssueCard'
@@ -12,7 +13,7 @@ import { Container } from '../styles/commonComponent'
 
 const Issue = () => {
   const dispatch = useDispatch()
-  const { repo, pageItems, loading } = useSelector((state) => state.issueData)
+  const { repo, pageItems, loading } = useSelector((state: RootState) => state.issueData)
 
   useEffect(() => {
     dispatch(showCurrentRepo())
@@ -31,7 +32,7 @@ const Issue = () => {
             {loading
               ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
               : pageItems.map((issue) => (
-                  <IssueCard key={issue.id} repoName={repo?.name} issue={issue} />
+                  <IssueCard key={issue.id} repoName={repo?.name || ''} issue={issue} />
                 ))}
           </IssueContainer>
           <PageNavigation />
