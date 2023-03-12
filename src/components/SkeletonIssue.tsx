@@ -5,12 +5,12 @@ import { ContentBox, GrayBox } from '../styles/commonComponent'
 const SkeletonIssue = () => {
   return (
     <ContentContainer>
-      <RepoTitle></RepoTitle>
-      <IssueTitle></IssueTitle>
-      <IssueBody></IssueBody>
+      <RepoTitle />
+      <IssueTitle />
+      <IssueBody />
       <BottomInfo>
-        <BottomInfoEl></BottomInfoEl>
-        <BottomInfoEl></BottomInfoEl>
+        <BottomInfoEl />
+        <BottomInfoEl />
       </BottomInfo>
     </ContentContainer>
   )

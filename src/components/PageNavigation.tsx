@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import { RootState } from 'redux/store'
 import styled from 'styled-components'
 import ChevronLeft from '../icons/ChevronLeft'
 import ChevronRight from '../icons/ChevronRight'
@@ -8,8 +9,8 @@ import { movePage } from '../redux/reducers/issueReducer'
 
 const PageNavigation = () => {
   const dispatch = useDispatch()
-  const { totalPage, page } = useSelector((state) => state.issueData)
-  const [pageNumbers, setPageNumbers] = useState([])
+  const { totalPage, page } = useSelector((state: RootState) => state.issueData)
+  const [pageNumbers, setPageNumbers] = useState<number[]>([])
 
   const goPrev = () => dispatch(movePage(page - 1))
 
@@ -73,7 +74,7 @@ const PagesWrapper = styled.div`
 
 const PageNumberBox = styled.div``
 
-const PageNumber = styled.span`
+const PageNumber = styled.span<{ isActive: boolean }>`
   cursor: pointer;
   color: ${({ isActive }) => (isActive ? '#00C89D' : 'black')};
 `
