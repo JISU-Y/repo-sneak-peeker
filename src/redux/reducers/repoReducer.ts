@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 import { RepoItemType, RepoResponseType } from '../../model/Repo'
 
+// TODO: api 폴더 및 파일 따로 빼기
 export const BASE_URL = 'https://api.github.com/'
 
 const initialFeedback = {
@@ -13,19 +14,10 @@ export interface RepoInitialType {
   loading: boolean
   error: unknown
   savedRepos: RepoItemType[]
-  pageItems: any[]
+  pageItems: RepoItemType[]
   page: number
   maxPage: number
   feedback: typeof initialFeedback
-}
-
-// TODO: ReducerType?
-interface ReducerType {
-  showSavedRepos: (state: RepoInitialType) => void
-  addRepoToStorage: (state: RepoInitialType, action: any) => void
-  deleteRepoFromStorage: (state: RepoInitialType, action: any) => void
-  loadMore: (state: RepoInitialType, action: any) => void
-  cleanupFeedback: (state: RepoInitialType) => void
 }
 
 const initialState: RepoInitialType = {
@@ -103,7 +95,6 @@ export const repoReducer = createSlice({
       }
     },
     loadMore: (state, action) => {
-      // loadMore 하기
       const page = action.payload
       const { data } = current(state)
       const pageItems = data?.items.slice((page - 1) * 10, page * 10)

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'redux/store'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import NoList from '../components/NoList'
@@ -9,7 +10,7 @@ import { Container } from '../styles/commonComponent'
 
 const Repo = () => {
   const dispatch = useDispatch()
-  const { savedRepos, feedback } = useSelector((state) => state.repoData)
+  const { savedRepos, feedback } = useSelector((state: RootState) => state.repoData)
 
   useEffect(() => {
     dispatch(showSavedRepos())
@@ -17,15 +18,17 @@ const Repo = () => {
 
   useEffect(() => {
     dispatch(cleanupFeedback())
-    if (!feedback.msg) return
-    alert(feedback.msg)
+
+    if (feedback.msg) {
+      alert(feedback.msg)
+    }
   }, [feedback.msg, dispatch])
 
   return (
     <Container>
       <Header title="레포 보관함" />
       <ContentWrapper>
-        {savedRepos ? ( //
+        {savedRepos ? (
           savedRepos.map((repo) => <RepoCard key={repo.id} repoInfo={repo} useDelete />)
         ) : (
           <NoList msg="저장된 레포가 없습니다." />

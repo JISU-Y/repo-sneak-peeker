@@ -6,11 +6,11 @@ const SkeletonRepo = () => {
   return (
     <ContentContainer>
       <RepoInfoWrapper>
-        <GrayBox></GrayBox>
-        <Description></Description>
-        <Owner></Owner>
+        <GrayBox />
+        <Description />
+        <Owner />
       </RepoInfoWrapper>
-      <Button></Button>
+      <Button />
     </ContentContainer>
   )
 }
