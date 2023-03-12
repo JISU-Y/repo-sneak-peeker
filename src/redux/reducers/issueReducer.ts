@@ -1,11 +1,24 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
+import { IssueType } from 'model/Issue'
+import { RepoItemType } from 'model/Repo'
 import { BASE_URL } from './repoReducer'
 
-const initialState = {
+export interface IssueInitialType {
+  repo: RepoItemType | null
+  loading: boolean
+  error: unknown
+  issues: IssueType[]
+  pageItems: any[]
+  page: number
+  totalPage: number
+}
+
+const initialState: IssueInitialType = {
   repo: null,
   loading: false,
   issues: [],
   pageItems: [],
+  error: null,
   page: 1,
   totalPage: 0
 }
@@ -25,30 +38,43 @@ const splitIssuesByPage = (items, page, state) => {
   }
 }
 
-export const fetchIssues = createAsyncThunk('issueData/fetchIssueData', async (fullName) => {
-  const res = await fetch(`${BASE_URL}repos/${fullName}/issues`)
-  const data = await res.json()
-  const selectedRepo = JSON.parse(localStorage.getItem('selectedRepo'))
-  localStorage.setItem('selectedRepo', JSON.stringify({ ...selectedRepo, issues: data }))
-  return data
-})
+// MEMO: fullname이 owner/reponame
+export const fetchIssues = createAsyncThunk(
+  'issueData/fetchIssueData',
+  async (fullName: string) => {
+    const res = await fetch(`${BASE_URL}repos/${fullName}/issues`)
+    const issuesData = await res.json()
+    const selectedRepo = localStorage.getItem('selectedRepo') ?? ''
+    const parsedSelectedRepo = JSON.parse(selectedRepo)
+
+    localStorage.setItem(
+      'selectedRepo',
+      JSON.stringify({ ...parsedSelectedRepo, issues: issuesData })
+    )
+    return issuesData
+  }
+)
 
 export const issueReducer = createSlice({
   name: 'issue',
   initialState,
   reducers: {
     selectRepo: (state, action) => {
-      const selectedRepoFromLocal = JSON.parse(localStorage.getItem('selectedRepo'))
+      const selectedRepoFromLocal = localStorage.getItem('selectedRepo') ?? ''
+      const parsedselectedRepoFromLocal = JSON.parse(selectedRepoFromLocal)
       const selectedRepo = action.payload
+
       state.page = 1
       localStorage.setItem(
         'selectedRepo',
-        JSON.stringify({ ...selectedRepoFromLocal, repo: selectedRepo })
+        JSON.stringify({ ...parsedselectedRepoFromLocal, repo: selectedRepo })
       )
       state.repo = selectedRepo
     },
     showCurrentRepo: (state) => {
-      const selectedRepo = JSON.parse(localStorage.getItem('selectedRepo'))
+      const selectedRepoFromLocal = localStorage.getItem('selectedRepo') ?? ''
+      const selectedRepo = JSON.parse(selectedRepoFromLocal)
+
       if (!selectedRepo?.issues) return
       state.repo = selectedRepo.repo
       state.issues = selectedRepo.issues

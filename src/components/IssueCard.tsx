@@ -1,11 +1,11 @@
+import { IssueType } from 'model/Issue'
 import React from 'react'
 import styled from 'styled-components'
 import { ContentBox, Tag } from '../styles/commonComponent'
 
-// TODO: typing 필요
 interface IssueCardProps {
   repoName: string
-  issue: any
+  issue: IssueType
 }
 
 const IssueCard = ({ repoName, issue }: IssueCardProps) => {
