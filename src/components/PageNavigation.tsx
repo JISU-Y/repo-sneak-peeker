@@ -25,13 +25,7 @@ const PageNavigation = () => {
 
   return (
     <PageContainer>
-      <ChevronLeft
-        width="0.7rem"
-        height="0.7rem"
-        fill={'black'}
-        onClick={goPrev}
-        cursor="pointer"
-      />
+      <ChevronLeft width="0.7rem" height="0.7rem" fill={'black'} onClick={goPrev} />
       <PagesWrapper>
         {Array.from(pageNumbers, (el) => (
           <PageNumberBox key={el}>
@@ -45,13 +39,7 @@ const PageNavigation = () => {
           </PageNumberBox>
         ))}
       </PagesWrapper>
-      <ChevronRight
-        width="0.7rem"
-        height="0.7rem"
-        fill={'black'}
-        onClick={goNext}
-        cursor="pointer"
-      />
+      <ChevronRight width="0.7rem" height="0.7rem" fill={'black'} onClick={goNext} />
     </PageContainer>
   )
 }

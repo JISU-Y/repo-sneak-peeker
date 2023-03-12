@@ -1,6 +1,19 @@
 import React from 'react'
 
-export default function ChevronRight({ width = '1em', height = '1em', fill, ...rest }) {
+interface ChevronProps {
+  width?: string
+  height?: string
+  fill?: string
+
+  onClick?: React.MouseEventHandler<SVGSVGElement>
+}
+
+export default function ChevronRight({
+  width = '1em',
+  height = '1em',
+  fill,
+  onClick
+}: ChevronProps) {
   return (
     <svg
       width={width}
@@ -9,7 +22,8 @@ export default function ChevronRight({ width = '1em', height = '1em', fill, ...r
       fill={fill}
       transform="scale(-1,1)"
       preserveAspectRatio="xMinYMin meet"
-      {...rest}
+      cursor="pointer"
+      onClick={onClick}
     >
       <path
         clipRule="evenodd"
