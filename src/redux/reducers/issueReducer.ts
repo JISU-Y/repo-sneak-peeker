@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
+import issueAPI from 'api/issue'
 import { IssueType } from 'model/Issue'
 import { RepoItemType } from 'model/Repo'
-import { BASE_URL } from './repoReducer'
 
 export interface IssueInitialType {
   repo: RepoItemType | null
@@ -49,7 +49,7 @@ const splitIssuesByPage = ({
 export const fetchIssues = createAsyncThunk(
   'issueData/fetchIssueData',
   async (fullName: string) => {
-    const res = await fetch(`${BASE_URL}repos/${fullName}/issues`) // MEMO: fullname -> owner/reponame
+    const res = await issueAPI.getIssues(fullName)
     const issuesData = await res.json()
     const selectedRepo = localStorage.getItem('selectedRepo') ?? ''
     const parsedSelectedRepo = JSON.parse(selectedRepo)

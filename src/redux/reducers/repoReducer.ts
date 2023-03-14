@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
+import repoAPI from 'api/repo'
 import { RepoItemType, RepoResponseType } from '../../model/Repo'
-
-// TODO: api 폴더 및 파일 따로 빼기
-export const BASE_URL = 'https://api.github.com/'
 
 const initialFeedback = {
   type: '',
@@ -33,8 +31,8 @@ const initialState: RepoInitialType = {
 
 export const fetchRepos = createAsyncThunk<RepoResponseType, string>(
   'repoData/fetchRepoData',
-  async (word) => {
-    const res = await fetch(`${BASE_URL}search/repositories?q=${word}`)
+  async (word: string) => {
+    const res = await repoAPI.searchReposWith(word)
     const data = await res.json()
 
     return data
