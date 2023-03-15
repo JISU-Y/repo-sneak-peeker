@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 import repoAPI from 'api/repo'
 import { RepoItemType, RepoResponseType } from '../../model/Repo'
 
+const MAX_SAVABLE_REPO = 4
+const PAGE_UNIT = 10
+
 const initialFeedback = {
   type: '',
   msg: ''
@@ -62,10 +65,10 @@ export const repoReducer = createSlice({
           msg: '이미 추가하신 repo입니다.'
         }
         return
-      } else if (reposFromLocal?.length >= 4) {
+      } else if (reposFromLocal?.length >= MAX_SAVABLE_REPO) {
         state.feedback = {
           type: 'failure',
-          msg: '최대 저장 repo를 초과하였습니다. (최대 4개)'
+          msg: `최대 저장 repo를 초과하였습니다. (최대 ${MAX_SAVABLE_REPO}개)`
         }
         return
       }
@@ -95,7 +98,7 @@ export const repoReducer = createSlice({
     loadMore: (state, action) => {
       const page = action.payload
       const { data } = current(state)
-      const pageItems = data?.items.slice(page * 10, (page + 1) * 10)
+      const pageItems = data?.items.slice(page * PAGE_UNIT, (page + 1) * PAGE_UNIT)
       state.page = page
       state.pageItems = pageItems ? [...state.pageItems, ...pageItems] : [...state.pageItems]
     },
@@ -114,8 +117,8 @@ export const repoReducer = createSlice({
         state.loading = false
         state.data = action.payload
         state.page = 0
-        state.pageItems = action.payload.items.slice(0, 10)
-        state.maxPage = Math.ceil(action.payload.items.length / 10)
+        state.pageItems = action.payload.items.slice(0, PAGE_UNIT)
+        state.maxPage = Math.ceil(action.payload.items.length / PAGE_UNIT)
       })
       .addCase(fetchRepos.rejected, (state, action) => {
         state.loading = false
