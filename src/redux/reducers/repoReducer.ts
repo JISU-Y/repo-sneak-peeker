@@ -56,7 +56,7 @@ export const repoReducer = createSlice({
 
       const { savedRepos } = current(state)
 
-      if (reposFromLocal?.find((el) => el.id === newRepo.id)) {
+      if (reposFromLocal?.find((el: RepoItemType) => el.id === newRepo.id)) {
         state.feedback = {
           type: 'failure',
           msg: '이미 추가하신 repo입니다.'
@@ -82,7 +82,7 @@ export const repoReducer = createSlice({
       const repos = localStorage.getItem('repos')
       const repoList = repos ? JSON.parse(repos) : null
 
-      const filteredRepos = repoList.filter((repo) => repo.id !== id)
+      const filteredRepos = repoList.filter((repo: RepoItemType) => repo.id !== id)
 
       localStorage.setItem('repos', JSON.stringify(filteredRepos))
 
@@ -95,10 +95,9 @@ export const repoReducer = createSlice({
     loadMore: (state, action) => {
       const page = action.payload
       const { data } = current(state)
-      const pageItems = data?.items.slice((page - 1) * 10, page * 10)
+      const pageItems = data?.items.slice(page * 10, (page + 1) * 10)
       state.page = page
-      state.maxPage = Math.ceil(data?.items.length || 10 / 10) // TODO: data?.items possibly undefined 수정 필요
-      state.pageItems = pageItems ? [...state.pageItems, ...pageItems] : [...state.pageItems] // 수정
+      state.pageItems = pageItems ? [...state.pageItems, ...pageItems] : [...state.pageItems]
     },
     cleanupFeedback: (state) => {
       state.feedback = initialFeedback
@@ -113,15 +112,15 @@ export const repoReducer = createSlice({
       })
       .addCase(fetchRepos.fulfilled, (state, action) => {
         state.loading = false
-        state.page = 0
-        state.pageItems = action.payload.items // TODO: items가 아닌 처음 10개만
-        // state.data = []
         state.data = action.payload
+        state.page = 0
+        state.pageItems = action.payload.items.slice(0, 10)
+        state.maxPage = Math.ceil(action.payload.items.length / 10)
       })
       .addCase(fetchRepos.rejected, (state, action) => {
         state.loading = false
         state.pageItems = []
-        // state.data = []
+        state.data = null
         state.page = 0
         state.error = {
           message: action.error.message,
