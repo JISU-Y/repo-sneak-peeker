@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { RootState } from 'redux/store'
@@ -10,14 +10,24 @@ import Skeleton from '../components/SkeletonRepo'
 import { cleanupFeedback, fetchRepos, loadMore } from '../redux/reducers/repoReducer'
 import { Container } from '../styles/commonComponent'
 
+type IntersectHandler = (entry: IntersectionObserverEntry, observer: IntersectionObserver) => void
+
 const Main = () => {
-  const [target, setTarget] = useState(null)
   const [text, setText] = useState('')
+  const ref = useRef<HTMLDivElement>(null)
+
   const dispatch = useDispatch()
 
   const { data, pageItems, page, maxPage, feedback, loading } = useSelector(
     (state: RootState) => state.repoData
   )
+
+  const isResultNotFound = useMemo(() => {
+    if (data) {
+      return data?.items.length < 1
+    }
+    return false
+  }, [data])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!text) {
@@ -33,25 +43,42 @@ const Main = () => {
     setText(e.target.value)
   }
 
-  useEffect(() => {
-    // TODO: 무한 스크롤 로직 수정 필요
-    const onIntersect: IntersectionObserverCallback = async ([entry], observer) => {
-      if (entry.isIntersecting) {
-        observer.unobserve(entry.target)
+  const onIntersect = useCallback<IntersectHandler>(
+    (entry, observer) => {
+      observer.unobserve(entry.target)
+
+      if (page !== maxPage) {
         dispatch(loadMore(page + 1))
-        observer.observe(entry.target)
       }
+    },
+    [dispatch, page, maxPage]
+  )
+
+  const callback = useCallback(
+    (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          onIntersect(entry, observer)
+        }
+      })
+    },
+    [onIntersect]
+  )
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
     }
 
-    let observer
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4
-      })
-      observer.observe(target)
+    const observer = new IntersectionObserver(callback, {
+      threshold: 0.2
+    })
+    observer.observe(ref.current)
+
+    return () => {
+      observer.disconnect()
     }
-    return () => observer && observer.disconnect()
-  }, [dispatch, target, page])
+  }, [dispatch, ref, page, callback])
 
   useEffect(() => {
     dispatch(cleanupFeedback())
@@ -73,19 +100,16 @@ const Main = () => {
         {pageItems?.map((repo) => (
           <RepoCard key={repo.id} repoInfo={repo} />
         ))}
+        {isResultNotFound && <NoList msg="검색 결과가 없습니다." />}
       </ContentWrapper>
-      {data?.items.length && (
-        <>
-          {data?.items.length < 1 && <NoList msg="검색 결과가 없습니다." />}
-          {data?.items.length > 0 && page !== maxPage && <TargetDiv ref={target} />}
-        </>
-      )}
+      <TargetDiv ref={ref} />
     </Container>
   )
 }
 
 const ContentWrapper = styled.div`
   width: 100%;
+  height: 100%;
   padding: 0 18px 12px;
 `
 
@@ -117,7 +141,7 @@ const SearchButton = styled.button`
 `
 
 const TargetDiv = styled.div`
-  height: 30px;
+  height: 10px;
 `
 
 export default Main
