@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { RootState } from 'redux/store'
@@ -21,6 +21,13 @@ const Main = () => {
   const { data, pageItems, page, maxPage, feedback, loading } = useSelector(
     (state: RootState) => state.repoData
   )
+
+  const isResultNotFound = useMemo(() => {
+    if (data) {
+      return data?.items.length < 1
+    }
+    return false
+  }, [data])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!text) {
@@ -93,8 +100,8 @@ const Main = () => {
         {pageItems?.map((repo) => (
           <RepoCard key={repo.id} repoInfo={repo} />
         ))}
+        {isResultNotFound && <NoList msg="검색 결과가 없습니다." />}
       </ContentWrapper>
-      {data && <>{data?.items.length < 1 && <NoList msg="검색 결과가 없습니다." />}</>}
       <TargetDiv ref={ref} />
     </Container>
   )
