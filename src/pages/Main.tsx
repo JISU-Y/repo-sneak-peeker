@@ -91,34 +91,54 @@ const Main = () => {
   return (
     <Container>
       <Header title="레포 검색" />
-      <ContentWrapper>
+      <SearchFormWrapper>
         <SearchForm onSubmit={handleSubmit}>
           <Input placeholder="repo를 검색해주세요." value={text} onChange={handleInputChange} />
           <SearchButton type="submit">검색</SearchButton>
         </SearchForm>
+      </SearchFormWrapper>
+      <ContentWrapper>
         {loading && Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />)}
         {pageItems?.map((repo) => (
           <RepoCard key={repo.id} repoInfo={repo} />
         ))}
         {isResultNotFound && <NoList msg="검색 결과가 없습니다." />}
+        <TargetDiv ref={ref} />
       </ContentWrapper>
-      <TargetDiv ref={ref} />
     </Container>
   )
 }
 
-const ContentWrapper = styled.div`
+const SearchFormWrapper = styled.div`
   width: 100%;
-  height: 100%;
-  padding: 0 18px 12px;
+  padding: 0 18px 18px;
 `
 
 const SearchForm = styled.form`
   width: 100%;
+  height: 38px;
   border-radius: 5px;
   border: 1.5px solid black;
   display: flex;
   overflow: hidden;
+`
+
+const ContentWrapper = styled.div`
+  width: 100%;
+  height: calc(100% - 130px);
+  overflow-y: auto;
+  padding: 0 18px 12px;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    background-color: #7d6dc1;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(124, 109, 193, 0.25);
+  }
 `
 
 const Input = styled.input`
