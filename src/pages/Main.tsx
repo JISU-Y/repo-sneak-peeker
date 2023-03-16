@@ -91,11 +91,11 @@ const Main = () => {
   return (
     <Container>
       <Header title="레포 검색" />
+      <SearchForm onSubmit={handleSubmit}>
+        <Input placeholder="repo를 검색해주세요." value={text} onChange={handleInputChange} />
+        <SearchButton type="submit">검색</SearchButton>
+      </SearchForm>
       <ContentWrapper>
-        <SearchForm onSubmit={handleSubmit}>
-          <Input placeholder="repo를 검색해주세요." value={text} onChange={handleInputChange} />
-          <SearchButton type="submit">검색</SearchButton>
-        </SearchForm>
         {loading && Array.from([1, 2, 3, 4, 5], (el) => <Skeleton key={el} />)}
         {pageItems?.map((repo) => (
           <RepoCard key={repo.id} repoInfo={repo} />
@@ -107,18 +107,19 @@ const Main = () => {
   )
 }
 
-const ContentWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 0 18px 12px;
-`
-
 const SearchForm = styled.form`
   width: 100%;
   border-radius: 5px;
   border: 1.5px solid black;
   display: flex;
   overflow: hidden;
+`
+
+const ContentWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 0 18px 12px;
 `
 
 const Input = styled.input`
