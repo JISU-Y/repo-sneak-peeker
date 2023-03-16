@@ -128,6 +128,17 @@ const ContentWrapper = styled.div`
   height: calc(100% - 130px);
   overflow-y: auto;
   padding: 0 18px 12px;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    background-color: #7d6dc1;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(124, 109, 193, 0.25);
+  }
 `
 
 const Input = styled.input`
