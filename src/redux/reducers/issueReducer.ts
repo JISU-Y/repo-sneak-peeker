@@ -67,22 +67,22 @@ export const issueReducer = createSlice({
   initialState,
   reducers: {
     selectRepo: (state, action) => {
-      const selectedRepoFromLocal = localStorage.getItem('selectedRepo') ?? ''
-      const parsedselectedRepoFromLocal = JSON.parse(selectedRepoFromLocal)
-      const selectedRepo = action.payload
+      const selectedRepoFromLocal = localStorage.getItem('selectedRepo')
+      const selectedRepo = selectedRepoFromLocal ? JSON.parse(selectedRepoFromLocal) : null
+      const newRepo = action.payload // TODO: payload typing -> type 단언 밖에 방법이 없나?
 
       state.page = 1
-      localStorage.setItem(
-        'selectedRepo',
-        JSON.stringify({ ...parsedselectedRepoFromLocal, repo: selectedRepo })
-      )
-      state.repo = selectedRepo
+      localStorage.setItem('selectedRepo', JSON.stringify({ ...selectedRepo, repo: newRepo }))
+      state.repo = newRepo
     },
     showCurrentRepo: (state) => {
-      const selectedRepoFromLocal = localStorage.getItem('selectedRepo') ?? ''
-      const selectedRepo = JSON.parse(selectedRepoFromLocal)
+      const selectedRepoFromLocal = localStorage.getItem('selectedRepo')
+      const selectedRepo = selectedRepoFromLocal ? JSON.parse(selectedRepoFromLocal) : null
 
-      if (!selectedRepo?.issues) return
+      if (!selectedRepo?.issues) {
+        return
+      }
+
       state.repo = selectedRepo.repo
       state.issues = selectedRepo.issues
       state.totalPage = Math.ceil(selectedRepo.issues.length / 6)
