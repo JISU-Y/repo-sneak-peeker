@@ -44,11 +44,11 @@ function RepoCard({ repoInfo, useDelete = false }: RepoCardProps) {
     <ContentBox onClick={gotoIssues}>
       <RepoInfoWrapper>
         <TitleAndLang>
-          <RepoName>{repoInfo.name ?? '레포 이름'}</RepoName>
+          <RepoName>{repoInfo.name ?? 'unknown'}</RepoName>
           {repoInfo?.language && <LanguageTag>{repoInfo?.language}</LanguageTag>}
         </TitleAndLang>
-        <Description>{repoInfo.description ?? '레포 description'}</Description>
-        <Owner>owner : {repoInfo.owner.login ?? 'JISU-Y'}</Owner>
+        <Description lineHiding={2}>{repoInfo.description ?? 'unknown'}</Description>
+        <Owner>owner: {repoInfo.owner.login ?? 'unknown'}</Owner>
       </RepoInfoWrapper>
       <Button onClick={useDelete ? deleteRepo : addRepo}>레포 {useDelete ? '삭제' : '추가'}</Button>
     </ContentBox>
@@ -70,16 +70,30 @@ const TitleAndLang = styled.div`
 
 const RepoName = styled.span`
   font-weight: bold;
+  max-width: 210px;
+  height: 20px;
   margin-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const LanguageTag = styled(Tag)`
   font-size: 12px;
 `
 
-const Description = styled.p``
+const Description = styled.p<{ lineHiding?: number }>`
+  min-height: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: ${({ lineHiding }) => (lineHiding ? lineHiding : 2)};
+  -webkit-box-orient: vertical;
+`
 
-const Owner = styled.span``
+const Owner = styled.span`
+  font-size: 14px;
+`
 
 const Button = styled.button`
   font-size: 18px;
