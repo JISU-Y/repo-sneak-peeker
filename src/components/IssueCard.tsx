@@ -1,6 +1,7 @@
-import { IssueType } from 'model/Issue'
 import React from 'react'
+import { IssueType } from 'model/Issue'
 import styled from 'styled-components'
+import { multiLineEllipsis } from 'styles/mixins'
 import { ContentBox, Tag } from '../styles/commonComponent'
 
 interface IssueCardProps {
@@ -13,9 +14,7 @@ const IssueCard = ({ repoName, issue }: IssueCardProps) => {
     <ContentContainer isOpen={issue.state === 'open'}>
       <IssueInfoWrapper href={issue.html_url} target="_blank" rel="noopener noreferrer">
         <RepoTitle>{repoName ?? 'repo title'}</RepoTitle>
-        <IssueTitle>
-          {issue.title.length > 30 ? `${issue.title.slice(0, 30)}...` : issue.title}
-        </IssueTitle>
+        <IssueTitle>{issue.title}</IssueTitle>
         <StateTag>{issue.state}</StateTag>
         <IssueBody>
           {issue?.body?.length > 50 ? `${issue?.body.slice(0, 50)}...` : issue?.body}
@@ -52,7 +51,8 @@ const RepoTitle = styled.span`
 const IssueTitle = styled.span`
   font-size: 20px;
   font-weight: bold;
-  word-break: break-all;
+  word-break: keep-all;
+  ${multiLineEllipsis}
 `
 
 const StateTag = styled(Tag)`
@@ -63,6 +63,8 @@ const StateTag = styled(Tag)`
 
 const IssueBody = styled.p`
   word-break: break-all;
+  /* TODO: line clamp 3 적용 필요 */
+  ${multiLineEllipsis}
 `
 
 const BottomInfo = styled.div`
