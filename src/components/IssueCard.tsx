@@ -1,6 +1,6 @@
 import React from 'react'
 import { IssueType } from 'model/Issue'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { multiLineEllipsis } from 'styles/mixins'
 import { ContentBox, Tag } from '../styles/commonComponent'
 
@@ -16,9 +16,7 @@ const IssueCard = ({ repoName, issue }: IssueCardProps) => {
         <RepoTitle>{repoName ?? 'repo title'}</RepoTitle>
         <IssueTitle>{issue.title}</IssueTitle>
         <StateTag>{issue.state}</StateTag>
-        <IssueBody>
-          {issue?.body?.length > 50 ? `${issue?.body.slice(0, 50)}...` : issue?.body}
-        </IssueBody>
+        <IssueBody lineClamp={3}>{issue?.body}</IssueBody>
         <BottomInfo>
           <Writer>{issue.user.login}</Writer>
           <Time>{issue.created_at.split('T')[0]}</Time>
@@ -63,7 +61,6 @@ const StateTag = styled(Tag)`
 
 const IssueBody = styled.p`
   word-break: break-all;
-  /* TODO: line clamp 3 적용 필요 */
   ${multiLineEllipsis}
 `
 
