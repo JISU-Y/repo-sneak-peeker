@@ -1,6 +1,6 @@
 import React from 'react'
 import { IssueType } from 'model/Issue'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { multiLineEllipsis } from 'styles/mixins'
 import { ContentBox, Tag } from '../styles/commonComponent'
 

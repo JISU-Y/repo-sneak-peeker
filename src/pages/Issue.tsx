@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { RootState } from 'redux/store'
@@ -15,11 +15,12 @@ const Issue = () => {
   const dispatch = useDispatch()
   const { repo, pageItems, loading } = useSelector((state: RootState) => state.issueData)
 
+  const noItem = useMemo(() => pageItems?.length < 1, [pageItems])
+
   useEffect(() => {
     dispatch(showCurrentRepo())
   }, [dispatch])
 
-  // TODO: page viewport 조정 필요
   return (
     <Container>
       <Header title="이슈 리스트" />
@@ -27,20 +28,22 @@ const Issue = () => {
         <RepoName>{repo?.name ?? '레포 이름'}</RepoName>
         <Owner>owner : {repo?.owner.login ?? 'JISU-Y'}</Owner>
       </RepoInfoBox>
-      {pageItems?.length > 0 ? (
-        <IssueContainer>
-          <CardWrapper>
-            {loading
-              ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
-              : pageItems.map((issue) => (
-                  <IssueCard key={issue.id} repoName={repo?.name || ''} issue={issue} />
-                ))}
-          </CardWrapper>
-          <PageNavigation />
-        </IssueContainer>
-      ) : (
-        loading || <NoList msg="현재 레포에 등록된 이슈가 없습니다." />
-      )}
+      <IssueContainer>
+        {noItem ? (
+          <NoList msg="현재 레포에 등록된 이슈가 없습니다." />
+        ) : (
+          <>
+            <CardWrapper>
+              {loading
+                ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
+                : pageItems.map((issue) => (
+                    <IssueCard key={issue.id} repoName={repo?.name || ''} issue={issue} />
+                  ))}
+            </CardWrapper>
+            <PageNavigation />
+          </>
+        )}
+      </IssueContainer>
     </Container>
   )
 }
