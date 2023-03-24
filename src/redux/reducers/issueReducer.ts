@@ -23,6 +23,8 @@ const initialState: IssueInitialType = {
   totalPage: 0
 }
 
+const ISSUE_PER_PAGE = 6
+
 const splitIssuesByPage = ({
   items,
   page,
@@ -32,14 +34,14 @@ const splitIssuesByPage = ({
   page: number
   state: IssueInitialType
 }) => {
-  const pageItems = items.slice((page - 1) * 6, page * 6)
+  const pageItems = items.slice((page - 1) * ISSUE_PER_PAGE, page * ISSUE_PER_PAGE)
   const { totalPage } = current(state)
   if (page >= state.totalPage) {
     state.page = state.totalPage
-    return items.slice((totalPage - 1) * 6, totalPage * 6)
+    return items.slice((totalPage - 1) * ISSUE_PER_PAGE, totalPage * ISSUE_PER_PAGE)
   } else if (page <= 1) {
     state.page = 1
-    return items.slice(0, 6)
+    return items.slice(0, ISSUE_PER_PAGE)
   } else {
     state.page = page
     return pageItems
@@ -85,7 +87,7 @@ export const issueReducer = createSlice({
 
       state.repo = selectedRepo.repo
       state.issues = selectedRepo.issues
-      state.totalPage = Math.ceil(selectedRepo.issues.length / 6)
+      state.totalPage = Math.ceil(selectedRepo.issues.length / ISSUE_PER_PAGE)
       state.pageItems = splitIssuesByPage({
         items: selectedRepo.issues,
         page: state.page,
@@ -115,7 +117,7 @@ export const issueReducer = createSlice({
       })
       .addCase(fetchIssues.fulfilled, (state, action) => {
         state.loading = false
-        state.totalPage = Math.ceil(action.payload.length / 6)
+        state.totalPage = Math.ceil(action.payload.length / ISSUE_PER_PAGE)
         state.issues = action.payload
         state.pageItems = splitIssuesByPage({
           items: action.payload,

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { RootState } from 'redux/store'
@@ -15,6 +15,8 @@ const Issue = () => {
   const dispatch = useDispatch()
   const { repo, pageItems, loading } = useSelector((state: RootState) => state.issueData)
 
+  const noItem = useMemo(() => pageItems?.length < 1, [pageItems])
+
   useEffect(() => {
     dispatch(showCurrentRepo())
   }, [dispatch])
@@ -26,20 +28,22 @@ const Issue = () => {
         <RepoName>{repo?.name ?? '레포 이름'}</RepoName>
         <Owner>owner : {repo?.owner.login ?? 'JISU-Y'}</Owner>
       </RepoInfoBox>
-      {pageItems?.length > 0 ? (
-        <>
-          <IssueContainer>
-            {loading
-              ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
-              : pageItems.map((issue) => (
-                  <IssueCard key={issue.id} repoName={repo?.name || ''} issue={issue} />
-                ))}
-          </IssueContainer>
-          <PageNavigation />
-        </>
-      ) : (
-        loading || <NoList msg="현재 레포에 등록된 이슈가 없습니다." />
-      )}
+      <IssueContainer>
+        {noItem ? (
+          <NoList msg="현재 레포에 등록된 이슈가 없습니다." />
+        ) : (
+          <>
+            <CardWrapper>
+              {loading
+                ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
+                : pageItems.map((issue) => (
+                    <IssueCard key={issue.id} repoName={repo?.name || ''} issue={issue} />
+                  ))}
+            </CardWrapper>
+            <PageNavigation />
+          </>
+        )}
+      </IssueContainer>
     </Container>
   )
 }
@@ -60,12 +64,28 @@ const RepoName = styled.span`
 const Owner = styled.span``
 
 const IssueContainer = styled.div`
+  width: 100%;
+  height: calc(100% - 100px);
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    background-color: #7d6dc1;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(124, 109, 193, 0.25);
+  }
+`
+
+const CardWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 226px;
   padding: 16px;
   gap: 8px;
-  height: 726px;
 `
 
 export default Issue
