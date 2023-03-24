@@ -19,6 +19,7 @@ const Issue = () => {
     dispatch(showCurrentRepo())
   }, [dispatch])
 
+  // TODO: page viewport 조정 필요
   return (
     <Container>
       <Header title="이슈 리스트" />
@@ -27,16 +28,16 @@ const Issue = () => {
         <Owner>owner : {repo?.owner.login ?? 'JISU-Y'}</Owner>
       </RepoInfoBox>
       {pageItems?.length > 0 ? (
-        <>
-          <IssueContainer>
+        <IssueContainer>
+          <CardWrapper>
             {loading
               ? Array.from([1, 2, 3, 4, 5, 6], (el) => <Skeleton key={el} />)
               : pageItems.map((issue) => (
                   <IssueCard key={issue.id} repoName={repo?.name || ''} issue={issue} />
                 ))}
-          </IssueContainer>
+          </CardWrapper>
           <PageNavigation />
-        </>
+        </IssueContainer>
       ) : (
         loading || <NoList msg="현재 레포에 등록된 이슈가 없습니다." />
       )}
@@ -60,12 +61,28 @@ const RepoName = styled.span`
 const Owner = styled.span``
 
 const IssueContainer = styled.div`
+  width: 100%;
+  height: calc(100% - 100px);
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    background-color: #7d6dc1;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(124, 109, 193, 0.25);
+  }
+`
+
+const CardWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 226px;
   padding: 16px;
   gap: 8px;
-  height: 726px;
 `
 
 export default Issue
